@@ -307,6 +307,10 @@ var disablePage = function () {
   disableElements(mapFilters);
   disableElements(adFormFieldsets);
   getAndDisableAddress(false);
+
+  mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
+  mainPin.addEventListener('keydown', mainPinKeyDownHandler);
+
   adFormTitleInput.removeEventListener('change', adFormChangeHandler);
   adFormRoomSelect.removeEventListener('change', adFormChangeHandler);
   adFormCapacitySelect.removeEventListener('change', adFormChangeHandler);
@@ -329,6 +333,9 @@ var enablePage = function () {
   map.insertBefore(document.createDocumentFragment().appendChild(renderCard(offers[0])), filterBlock);
 
   getAndDisableAddress(true);
+
+  mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
+  mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
 
   adFormTitleInput.addEventListener('change', adFormChangeHandler);
   adFormRoomSelect.addEventListener('change', adFormChangeHandler);
