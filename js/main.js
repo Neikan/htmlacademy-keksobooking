@@ -1,8 +1,9 @@
 'use strict';
 
-// Параметры метки
+// Параметры меток
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
+var MAIN_PIN_AFTER_HEIGHT = 16; // 22px - 6px padding
 var MENU_HEIGHT = 46;
 
 // Парметры автора
@@ -29,6 +30,11 @@ var LOCATION_X_MIN = 0;
 var LOCATION_Y_MIN = 130;
 var LOCATION_Y_MAX = 630;
 
+var KEYCODE_ENTER = 13;
+
+var MIN_TITLE_LENGTH = 2; // Потом поменять на 30 согласно ТЗ
+var MAX_TITLE_LENGTH = 100;
+
 var roomTypes = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -37,6 +43,18 @@ var roomTypes = {
 };
 
 var locationXMax = Math.floor(document.querySelector('.map__overlay').offsetWidth);
+
+var map = document.querySelector('.map');
+var adForm = document.querySelector('.ad-form');
+var mainPin = document.querySelector('.map__pin--main');
+
+var filterBlock = map.querySelector('.map__filters-container');
+var mapFilters = map.querySelectorAll('input, select, fieldset');
+var adFormFieldsets = adForm.querySelectorAll('input, select, fieldset');
+var adFormTitleInput = adForm.querySelector('input[name="title"]');
+var adFormRoomSelect = adForm.querySelector('select[name="rooms"]');
+var adFormCapacitySelect = adForm.querySelector('select[name="capacity"]');
+var adFormAddressInput = adForm.querySelector('input[name="address"]');
 
 // Получение случайного числа из диапазона
 var getRandomNumber = function (min, max) {
@@ -209,16 +227,117 @@ var placeOffers = function (offers) {
   return fragment;
 };
 
-// Отображение блока .map
-var activateMap = document.querySelector('.map');
-activateMap.classList.remove('map--faded');
-
 // Генерация объявлений
 var offers = generateOffers();
 
-// Отображение объявлений на карте
-activateMap.appendChild(placeOffers(offers));
+// Органичения для названия объявления
+adFormTitleInput.setAttribute('minlength', MIN_TITLE_LENGTH);
+adFormTitleInput.setAttribute('maxlength', MAX_TITLE_LENGTH);
+adFormTitleInput.setAttribute('required', true);
 
-// Отображение карточки первого объявления
-var filterBlock = activateMap.querySelector('.map__filters-container');
-activateMap.insertBefore(document.createDocumentFragment().appendChild(renderCard(offers[0])), filterBlock);
+// Отключение элементов
+var disableElements = function (elements) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].setAttribute('disabled', true);
+  }
+};
+
+// Включение элементов
+var enableElements = function (elements) {
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].removeAttribute('disabled');
+  }
+};
+
+// Хендлеры
+var mainPinMouseDownHandler = function (evt) {
+  if (evt.buttons === 1) {
+    enablePage();
+  }
+};
+
+var mainPinKeyDownHandler = function (evt) {
+  if (evt.keyCode === KEYCODE_ENTER) {
+    enablePage();
+  }
+};
+
+var adFormChangeHandler = function () {
+  validateRoomAndCapacity();
+};
+
+// Прослушка событий
+mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
+mainPin.addEventListener('keydown', mainPinKeyDownHandler);
+
+// Получение и деактивация ввода адреса
+var getAndDisableAddress = function (isEnablePage) {
+  adFormAddressInput.setAttribute('disabled', true);
+  adFormAddressInput.classList.add('ad-form--disabled');
+  var adFormAddressInputX = Math.round(parseInt(mainPin.style.left, 10) + mainPin.clientWidth / 2);
+  var adFormAddressInputY = Math.round(parseInt(mainPin.style.top, 10) + mainPin.clientHeight / 2);
+  if (isEnablePage) {
+    adFormAddressInputY += Math.round(mainPin.clientHeight / 2 + MAIN_PIN_AFTER_HEIGHT);
+  }
+  adFormAddressInput.value = adFormAddressInputX + ', ' + adFormAddressInputY;
+};
+
+// Валидация количества гостей и комнат
+var validateRoomAndCapacity = function () {
+  switch (true) {
+    case (adFormRoomSelect.value === '100' && adFormCapacitySelect.value !== '0'):
+      adFormRoomSelect.setCustomValidity('Для выбранного количества комнат размещение гостей невозможно');
+      break;
+    case (adFormRoomSelect.value !== '100' && adFormCapacitySelect.value === '0'):
+      adFormCapacitySelect.setCustomValidity('Выбранное количество комнат предназначено для гостей');
+      break;
+    case (adFormRoomSelect.value < adFormCapacitySelect.value && adFormCapacitySelect.value !== 0):
+      adFormCapacitySelect.setCustomValidity('Количество гостей больше, чем комнат. Пожалуйста, укажите количество гостей, равное или меньшее, чем количество комнат');
+      break;
+    default:
+      adFormRoomSelect.setCustomValidity('');
+      adFormCapacitySelect.setCustomValidity('');
+  }
+};
+
+// Неактивное состояние страницы
+var disablePage = function () {
+  map.classList.add('map--faded');
+  adForm.classList.add('ad-form--disabled');
+  disableElements(mapFilters);
+  disableElements(adFormFieldsets);
+  getAndDisableAddress(false);
+
+  mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
+  mainPin.addEventListener('keydown', mainPinKeyDownHandler);
+
+  adFormTitleInput.removeEventListener('change', adFormChangeHandler);
+  adFormRoomSelect.removeEventListener('change', adFormChangeHandler);
+  adFormCapacitySelect.removeEventListener('change', adFormChangeHandler);
+};
+
+disablePage();
+
+// Активное состояние страницы
+var enablePage = function () {
+  mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
+  mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
+
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  adFormAddressInput.classList.add('ad-form--disabled');
+  enableElements(mapFilters);
+  enableElements(adFormFieldsets);
+
+  map.appendChild(placeOffers(offers));
+  map.insertBefore(document.createDocumentFragment().appendChild(renderCard(offers[0])), filterBlock);
+
+  getAndDisableAddress(true);
+
+  mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
+  mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
+
+  adFormTitleInput.addEventListener('change', adFormChangeHandler);
+  adFormRoomSelect.addEventListener('change', adFormChangeHandler);
+  adFormCapacitySelect.addEventListener('change', adFormChangeHandler);
+};
