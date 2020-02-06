@@ -40,15 +40,15 @@ var MAX_PRICE = 1000000;
 
 var roomTypes = {
   palace: 'Дворец',
-  flat: 'Квартира',
   house: 'Дом',
+  flat: 'Квартира',
   bungalo: 'Бунгало'
 };
 
-var roomPrices = {
+var RoomPrices = {
   palace: 10000,
-  flat: 1000,
   house: 5000,
+  flat: 1000,
   bungalo: 0
 };
 
@@ -113,7 +113,7 @@ var createOffer = function () {
   var locationY = getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX - MENU_HEIGHT); // С учетом высоты меню
   var typeEng = getRandomElement(OFFER_TYPE);
   var type = roomTypes[typeEng];
-  var price = getRandomNumber(OFFER_PRICE_MIN, OFFER_PRICE_MAX) * roomPrices[typeEng];
+  var price = getRandomNumber(OFFER_PRICE_MIN, OFFER_PRICE_MAX) * RoomPrices[typeEng];
 
   return {
     author: {
@@ -238,9 +238,6 @@ var renderCard = function (offerItem) {
   renderFeatures(cardFeatures, offerItem.offer.features);
   renderPhotos(cardPhotos, offerItem.offer.photos);
 
-  cardElement.setAttribute('tabindex', 0);
-
-  cardElement.addEventListener('keydown', cardKeyDownHandler);
   closeBtnCard.addEventListener('click', closeBtnCardClickHandler);
 
   return cardElement;
@@ -258,7 +255,6 @@ var closeCard = function () {
   if (card) {
     card.remove();
     map.removeEventListener('click', closeBtnCardClickHandler);
-    map.removeEventListener('keydown', cardKeyDownHandler);
   }
 };
 
@@ -276,19 +272,37 @@ var placeOffers = function (offers) {
 var offers = generateOffers();
 
 // Органичения для названия объявления
-adFormTitle.setAttribute('minlength', MIN_TITLE_LENGTH);
-adFormTitle.setAttribute('maxlength', MAX_TITLE_LENGTH);
-adFormTitle.setAttribute('required', true);
+var setRequirementsTitle = function () {
+  adFormTitle.setAttribute('minlength', MIN_TITLE_LENGTH);
+  adFormTitle.setAttribute('maxlength', MAX_TITLE_LENGTH);
+  adFormTitle.setAttribute('required', true);
+};
 
 // Органичения и предустановки для цены
-adFormPrice.placeholder = roomPrices[adFormType.value];
-adFormPrice.min = roomPrices[adFormType.value];
-adFormPrice.max = MAX_PRICE;
-adFormPrice.setAttribute('required', true);
+var setRequirementsPrice = function () {
+  adFormPrice.placeholder = RoomPrices[adFormType.value];
+  adFormPrice.min = RoomPrices[adFormType.value];
+  adFormPrice.max = MAX_PRICE;
+  adFormPrice.setAttribute('required', true);
+};
 
 // Установка ограничений на загрузку типов файлов
-adFormAvatar.setAttribute('accept', 'image/png, image/jpeg');
-adFormPhotos.setAttribute('accept', 'image/png, image/jpeg');
+var setRequirementsImages = function () {
+  adFormAvatar.setAttribute('accept', 'image/png, image/jpeg');
+  adFormPhotos.setAttribute('accept', 'image/png, image/jpeg');
+};
+
+// Получение и деактивация ввода адреса
+var setRequirementsAddress = function (isEnablePage) {
+  adFormAddress.setAttribute('disabled', true);
+  adFormAddress.classList.add('ad-form--disabled');
+  var adFormAddressX = Math.round(parseInt(mainPin.style.left, 10) + mainPin.clientWidth / 2);
+  var adFormAddressY = Math.round(parseInt(mainPin.style.top, 10) + mainPin.clientHeight / 2);
+  if (isEnablePage) {
+    adFormAddressY += Math.round(mainPin.clientHeight / 2 + MAIN_PIN_AFTER_HEIGHT);
+  }
+  adFormAddress.value = adFormAddressX + ', ' + adFormAddressY;
+};
 
 // Отключение элементов
 var disableElements = function (elements) {
@@ -325,7 +339,7 @@ var closeBtnCardClickHandler = function () {
   closeCard();
 };
 
-var cardKeyDownHandler = function (evt) {
+var mapKeyDownHandler = function (evt) {
   if (evt.keyCode === KEYCODE_ESC) {
     closeCard();
   }
@@ -338,18 +352,6 @@ var pinClickHandler = function (evt) {
 // Прослушка событий на главной метке
 mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
 mainPin.addEventListener('keydown', mainPinKeyDownHandler);
-
-// Получение и деактивация ввода адреса
-var getAndDisableAddress = function (isEnablePage) {
-  adFormAddress.setAttribute('disabled', true);
-  adFormAddress.classList.add('ad-form--disabled');
-  var adFormAddressX = Math.round(parseInt(mainPin.style.left, 10) + mainPin.clientWidth / 2);
-  var adFormAddressY = Math.round(parseInt(mainPin.style.top, 10) + mainPin.clientHeight / 2);
-  if (isEnablePage) {
-    adFormAddressY += Math.round(mainPin.clientHeight / 2 + MAIN_PIN_AFTER_HEIGHT);
-  }
-  adFormAddress.value = adFormAddressX + ', ' + adFormAddressY;
-};
 
 // Валидация количества гостей и комнат
 var validateRoomAndCapacity = function () {
@@ -373,25 +375,24 @@ var validateRoomAndCapacity = function () {
 var validateTime = function (evt) {
   if (evt.target === adFormTimeIn) {
     adFormTimeOut.value = adFormTimeIn.value;
-  } else {
+  }
+  if (evt.target === adFormTimeOut) {
     adFormTimeIn.value = adFormTimeOut.value;
+  }
+};
+
+var validatePrice = function (evt) {
+  if (evt.target === adFormType) {
+    adFormPrice.placeholder = RoomPrices[adFormType.value];
+    adFormPrice.min = RoomPrices[adFormType.value];
   }
 };
 
 // Валидация всей формы
 var validationForm = function (evt) {
-  switch (evt.target) {
-    case (adFormTimeIn || adFormTimeOut):
-      validateTime(evt);
-      break;
-
-    case (adFormRoom || adFormCapacity):
-      validateRoomAndCapacity();
-      break;
-
-    default:
-      validateRoomAndCapacity();
-  }
+  validatePrice(evt);
+  validateTime(evt);
+  validateRoomAndCapacity();
 };
 
 // Неактивное состояние страницы
@@ -400,11 +401,14 @@ var disablePage = function () {
   adForm.classList.add('ad-form--disabled');
   disableElements(mapFilters);
   disableElements(adFormFieldsets);
-  getAndDisableAddress(false);
+
+  setRequirementsAddress(false);
+  setRequirementsPrice();
 
   mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
   mainPin.addEventListener('keydown', mainPinKeyDownHandler);
 
+  map.removeEventListener('keydown', mapKeyDownHandler);
   adForm.removeEventListener('change', adFormChangeHandler);
 };
 
@@ -425,10 +429,14 @@ var enablePage = function () {
   map.insertBefore(placeOffers(offers), filterBlock);
   map.insertBefore(document.createDocumentFragment().appendChild(renderCard(offers[0])), filterBlock);
 
-  getAndDisableAddress(true);
+  setRequirementsTitle();
+  setRequirementsAddress(true);
+  setRequirementsPrice();
+  setRequirementsImages();
 
   mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
   mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
 
+  map.addEventListener('keydown', mapKeyDownHandler);
   adForm.addEventListener('change', adFormChangeHandler);
 };
