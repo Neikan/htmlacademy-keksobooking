@@ -9,8 +9,6 @@
   var mapFiltersContainer = map.querySelector('.map__filters-container');
   var mapFiltersFieldsets = map.querySelectorAll('input, select, fieldset');
 
-  var mainPin = window.form.mainPin;
-
   // Хендлеры
   var mainPinMouseDownHandler = function (evt) {
     if (evt.buttons === 1) {
@@ -35,21 +33,20 @@
   };
 
   // Прослушка событий на главной метке
-  mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
-  mainPin.addEventListener('keydown', mainPinKeyDownHandler);
+  window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
+  window.locality.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
 
   // Неактивное состояние страницы
   var disablePage = function () {
+    window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
+    window.locality.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
     map.classList.add('map--faded');
     window.form.adForm.classList.add('ad-form--disabled');
     window.utils.disableElements(mapFiltersFieldsets);
     window.utils.disableElements(window.form.adFormFieldsets);
 
-    window.form.setRequirementsAddress(false);
     window.form.setRequirementsPrice();
-
-    mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
-    mainPin.addEventListener('keydown', mainPinKeyDownHandler);
+    window.locality.getAddress(false);
 
     map.removeEventListener('keydown', mapKeyDownHandler);
     window.form.adForm.removeEventListener('change', adFormChangeHandler);
@@ -59,8 +56,8 @@
 
   // Активное состояние страницы
   var enablePage = function () {
-    mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
-    mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
+    window.locality.mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
+    window.locality.mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
     // adForm.setAttribute('action', 'https://js.dump.academy/keksobooking/data'); // П.5 из ТЗ
 
     map.classList.remove('map--faded');
@@ -73,12 +70,10 @@
     map.insertBefore(document.createDocumentFragment().appendChild(window.card.renderCard(window.data.offers[0])), mapFiltersContainer);
 
     window.form.setRequirementsTitle();
-    window.form.setRequirementsAddress(true);
     window.form.setRequirementsPrice();
     window.form.setRequirementsImages();
-
-    mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
-    mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
+    window.form.setRequirementsAddress();
+    window.locality.getAddress(true);
 
     map.addEventListener('keydown', mapKeyDownHandler);
     window.form.adForm.addEventListener('change', adFormChangeHandler);

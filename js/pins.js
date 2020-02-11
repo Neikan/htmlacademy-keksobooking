@@ -17,9 +17,8 @@
     pinElement.querySelector('img').src = offerItem.author.avatar;
     pinElement.querySelector('img').alt = offerItem.offer.title;
     pinElement.style.left = (offerItem.location.x - window.data.PIN_WIDTH / 2) + 'px';
-    pinElement.style.top = (offerItem.location.y + window.data.PIN_HEIGHT) + 'px';
+    pinElement.style.top = (offerItem.location.y - window.data.PIN_HEIGHT) + 'px';
 
-    pinElement.setAttribute('tabindex', 0);
     pinElement.setAttribute('offer-id', i);
     pinElement.addEventListener('click', pinClickHandler);
 
