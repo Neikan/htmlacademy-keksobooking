@@ -7,9 +7,6 @@
 
   var MAX_PRICE = 1000000;
 
-  var MAIN_PIN_AFTER_HEIGHT = 16; // 22px - 6px padding
-  var mainPin = document.querySelector('.map__pin--main');
-
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = adForm.querySelectorAll('input, select, fieldset');
 
@@ -47,15 +44,9 @@
   };
 
   // Получение и деактивация ввода адреса
-  var setRequirementsAddress = function (isEnablePage) {
+  var setRequirementsAddress = function () {
     adFormAddress.setAttribute('disabled', true);
     adFormAddress.classList.add('ad-form--disabled');
-    var adFormAddressX = Math.round(parseInt(mainPin.style.left, 10) + mainPin.clientWidth / 2);
-    var adFormAddressY = Math.round(parseInt(mainPin.style.top, 10) + mainPin.clientHeight / 2);
-    if (isEnablePage) {
-      adFormAddressY += Math.round(mainPin.clientHeight / 2 + MAIN_PIN_AFTER_HEIGHT);
-    }
-    adFormAddress.value = adFormAddressX + ', ' + adFormAddressY;
   };
 
   // Валидация количества гостей и комнат
@@ -102,10 +93,10 @@
   };
 
   window.form = {
-    mainPin: mainPin,
     adForm: adForm,
     adFormFieldsets: adFormFieldsets,
     adFormAddress: adFormAddress,
+
     setRequirementsTitle: setRequirementsTitle,
     setRequirementsPrice: setRequirementsPrice,
     setRequirementsImages: setRequirementsImages,

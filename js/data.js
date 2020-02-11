@@ -4,7 +4,6 @@
 
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
-  var MAP_FILTERS_HEIGHT = 46;
 
   // Парметры автора
   var AVATAR_URL = 'img/avatars/user0';
@@ -82,7 +81,7 @@
   // Создание объявления со случайными параметрами
   var createOffer = function () {
     var locationX = getRandomNumber(LOCATION_X_MIN + PIN_WIDTH / 2, locationXMax - PIN_WIDTH / 2); // С учетом ширины метки
-    var locationY = getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX - MAP_FILTERS_HEIGHT); // С учетом высоты меню
+    var locationY = getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX);
     var typeEng = getRandomElement(OFFER_TYPE);
     var type = roomTypes[typeEng];
     var price = getRandomNumber(OFFER_PRICE_MIN, OFFER_PRICE_MAX) * RoomPrices[typeEng];
@@ -125,6 +124,10 @@
   window.data = {
     PIN_WIDTH: PIN_WIDTH,
     PIN_HEIGHT: PIN_HEIGHT,
+    LOCATION_X_MIN: LOCATION_X_MIN,
+    LOCATION_Y_MIN: LOCATION_Y_MIN,
+    LOCATION_Y_MAX: LOCATION_Y_MAX,
+    locationXMax: locationXMax,
     RoomPrices: RoomPrices,
     createOffer: createOffer,
     generateOffers: generateOffers,
