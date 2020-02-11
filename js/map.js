@@ -33,18 +33,20 @@
   };
 
   // Прослушка событий на главной метке
-  window.location.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
-  window.location.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
+  window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
+  window.locality.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
 
   // Неактивное состояние страницы
   var disablePage = function () {
+    window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
+    window.locality.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
     map.classList.add('map--faded');
     window.form.adForm.classList.add('ad-form--disabled');
     window.utils.disableElements(mapFiltersFieldsets);
     window.utils.disableElements(window.form.adFormFieldsets);
 
     window.form.setRequirementsPrice();
-    window.location.getAddress(false);
+    window.locality.getAddress(false);
 
     map.removeEventListener('keydown', mapKeyDownHandler);
     window.form.adForm.removeEventListener('change', adFormChangeHandler);
@@ -54,8 +56,8 @@
 
   // Активное состояние страницы
   var enablePage = function () {
-    window.location.mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
-    window.location.mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
+    window.locality.mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
+    window.locality.mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
     // adForm.setAttribute('action', 'https://js.dump.academy/keksobooking/data'); // П.5 из ТЗ
 
     map.classList.remove('map--faded');
@@ -71,7 +73,7 @@
     window.form.setRequirementsPrice();
     window.form.setRequirementsImages();
     window.form.setRequirementsAddress();
-    window.location.getAddress(true);
+    window.locality.getAddress(true);
 
     map.addEventListener('keydown', mapKeyDownHandler);
     window.form.adForm.addEventListener('change', adFormChangeHandler);

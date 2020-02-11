@@ -80,7 +80,7 @@
     }
   });
 
-  window.location = {
+  window.locality = {
     mainPin: mainPin,
     getAddress: getAddress
   };
