@@ -4,11 +4,10 @@
 
   var showErrorMessageLoadDataHandler = function (errorMessage) {
     var messageTemplate = document.querySelector('#error').content.querySelector('.error');
+
     var message = messageTemplate.cloneNode(true);
     message.setAttribute('name', 'error__message');
-
-    var messageText = message.querySelector('.error__message');
-    messageText.textContent = errorMessage;
+    message.querySelector('.error__message').textContent = errorMessage;
 
     document.body.insertAdjacentElement('afterbegin', message);
   };

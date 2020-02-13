@@ -20,8 +20,6 @@
           break;
         case (StatusCode.NotFound):
           errorHandler('Сервер недоступен. Мы работаем, чтобы скорее все починить!');
-
-
           break;
         default:
           errorHandler('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
