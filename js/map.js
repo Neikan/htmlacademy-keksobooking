@@ -32,6 +32,31 @@
     }
   };
 
+  var showLoadedOffersHandler = function (responseItems) {
+    map.classList.remove('map--faded');
+    window.form.adForm.classList.remove('ad-form--disabled');
+    window.form.adFormAddress.classList.add('ad-form--disabled');
+    window.utils.enableElements(mapFiltersFieldsets);
+    window.utils.enableElements(window.form.adFormFieldsets);
+
+    window.pins.offers = window.utils.getShuffleArray(responseItems);
+    map.insertBefore(window.pins.placePins(window.pins.offers), mapFiltersContainer);
+    map.insertBefore(document.createDocumentFragment().appendChild(window.card.renderCard(window.pins.offers[0])), mapFiltersContainer);
+  };
+
+  var errorGetLoadedOffersHandler = function (response) {
+    window.messages.showErrorMessageLoadDataHandler(response);
+    var buttonError = document.querySelector('.error__button');
+    buttonError.addEventListener('click', removeErrorMessageHandler);
+  };
+
+  var removeErrorMessageHandler = function () {
+    if (document.querySelector('div[name="error__message"]') !== null) {
+      document.querySelector('div[name="error__message"]').remove();
+      disablePage();
+    }
+  };
+
   // Прослушка событий на главной метке
   window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
   window.locality.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
@@ -58,16 +83,8 @@
   var enablePage = function () {
     window.locality.mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
     window.locality.mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
-    // adForm.setAttribute('action', 'https://js.dump.academy/keksobooking/data'); // П.5 из ТЗ
 
-    map.classList.remove('map--faded');
-    window.form.adForm.classList.remove('ad-form--disabled');
-    window.form.adFormAddress.classList.add('ad-form--disabled');
-    window.utils.enableElements(mapFiltersFieldsets);
-    window.utils.enableElements(window.form.adFormFieldsets);
-
-    map.insertBefore(window.pins.placePins(window.data.offers), mapFiltersContainer);
-    map.insertBefore(document.createDocumentFragment().appendChild(window.card.renderCard(window.data.offers[0])), mapFiltersContainer);
+    window.backend.loadData(showLoadedOffersHandler, errorGetLoadedOffersHandler);
 
     window.form.setRequirementsTitle();
     window.form.setRequirementsPrice();
@@ -75,7 +92,7 @@
     window.form.setRequirementsAddress();
     window.locality.getAddress(true);
 
-    map.addEventListener('keydown', mapKeyDownHandler);
+    document.addEventListener('keydown', mapKeyDownHandler);
     window.form.adForm.addEventListener('change', adFormChangeHandler);
   };
 

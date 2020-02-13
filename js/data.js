@@ -45,63 +45,30 @@
 
   var locationXMax = Math.floor(document.querySelector('.map__overlay').offsetWidth);
 
-  // Получение случайного числа из диапазона
-  var getRandomNumber = function (min, max) {
-    return Math.floor(min + Math.random() * (max + 1 - min));
-  };
-
-  // Получение случайного элемента из массива
-  var getRandomElement = function (arrayElements) {
-    return arrayElements[Math.floor(Math.random() * arrayElements.length)];
-  };
-
-  // Перемешивание массива
-  var getShuffleArray = function (array) {
-    var j;
-    var temp;
-    for (var i = array.length - 1; i > 0; i--) {
-      j = Math.floor(Math.random() * (i + 1));
-      temp = array[j];
-      array[j] = array[i];
-      array[i] = temp;
-    }
-    return array;
-  };
-
-  // Получение подмассива из массива
-  var getRandomArray = function (array) {
-    var lengthNewArray = getRandomNumber(0, array.length);
-    var subArray = [];
-    for (var i = 0; i < lengthNewArray; i++) {
-      subArray.push(array[i]);
-    }
-    return subArray;
-  };
-
   // Создание объявления со случайными параметрами
   var createOffer = function () {
-    var locationX = getRandomNumber(LOCATION_X_MIN + PIN_WIDTH / 2, locationXMax - PIN_WIDTH / 2); // С учетом ширины метки
-    var locationY = getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX);
-    var typeEng = getRandomElement(OFFER_TYPE);
+    var locationX = window.utils.getRandomNumber(LOCATION_X_MIN + PIN_WIDTH / 2, locationXMax - PIN_WIDTH / 2); // С учетом ширины метки
+    var locationY = window.utils.getRandomNumber(LOCATION_Y_MIN, LOCATION_Y_MAX);
+    var typeEng = window.utils.getRandomElement(OFFER_TYPE);
     var type = roomTypes[typeEng];
-    var price = getRandomNumber(OFFER_PRICE_MIN, OFFER_PRICE_MAX) * RoomPrices[typeEng];
+    var price = window.utils.getRandomNumber(OFFER_PRICE_MIN, OFFER_PRICE_MAX) * RoomPrices[typeEng];
 
     return {
       author: {
-        avatar: AVATAR_URL + getRandomNumber(1, 8) + AVATAR_FILE_EXTENSION
+        avatar: AVATAR_URL + window.utils.getRandomNumber(1, 8) + AVATAR_FILE_EXTENSION
       },
       offer: {
         title: type + '! Только сейчас! И всего лишь за ' + price + '₽/ночь!',
         address: locationX + ', ' + locationY,
         price: price,
         type: type,
-        rooms: getRandomElement(OFFER_ROOMS),
-        guests: getRandomElement(OFFER_GUESTS),
-        checkin: getRandomElement(OFFER_CHECHIN),
-        checkout: getRandomElement(OFFER_CHECHOUT),
-        features: getRandomArray(getShuffleArray(OFFER_FEATURES)),
+        rooms: window.utils.getRandomElement(OFFER_ROOMS),
+        guests: window.utils.getRandomElement(OFFER_GUESTS),
+        checkin: window.utils.getRandomElement(OFFER_CHECHIN),
+        checkout: window.utils.getRandomElement(OFFER_CHECHOUT),
+        features: window.utils.getRandomArray(window.utils.getShuffleArray(OFFER_FEATURES)),
         description: '{description}',
-        photos: getRandomArray(getShuffleArray(OFFER_PHOTOS))
+        photos: window.utils.getRandomArray(window.utils.getShuffleArray(OFFER_PHOTOS))
       },
       location: {
         x: locationX,
