@@ -2,6 +2,9 @@
 
 (function () {
 
+  var KEYCODE_ENTER = 13;
+  var KEYCODE_ESC = 27;
+
   // Включение элементов
   var enableElements = function (elements) {
     for (var i = 0; i < elements.length; i++) {
@@ -50,6 +53,8 @@
   };
 
   window.utils = {
+    KEYCODE_ENTER: KEYCODE_ENTER,
+    KEYCODE_ESC: KEYCODE_ESC,
     getRandomNumber: getRandomNumber,
     getRandomElement: getRandomElement,
     getRandomArray: getRandomArray,

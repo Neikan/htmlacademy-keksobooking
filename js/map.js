@@ -2,9 +2,6 @@
 
 (function () {
 
-  var KEYCODE_ENTER = 13;
-  var KEYCODE_ESC = 27;
-
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
   var mapFiltersFieldsets = map.querySelectorAll('input, select, fieldset');
@@ -17,7 +14,7 @@
   };
 
   var mainPinKeyDownHandler = function (evt) {
-    if (evt.keyCode === KEYCODE_ENTER) {
+    if (evt.keyCode === window.utils.KEYCODE_ENTER) {
       enablePage();
     }
   };
@@ -27,7 +24,7 @@
   };
 
   var mapKeyDownHandler = function (evt) {
-    if (evt.keyCode === KEYCODE_ESC) {
+    if (evt.keyCode === window.utils.KEYCODE_ESC) {
       window.card.closeCard();
     }
   };
@@ -44,18 +41,18 @@
     map.insertBefore(document.createDocumentFragment().appendChild(window.card.renderCard(window.pins.offers[0])), mapFiltersContainer);
   };
 
-  var errorGetLoadedOffersHandler = function (response) {
-    window.messages.showErrorMessageLoadDataHandler(response);
-    var buttonError = document.querySelector('.error__button');
-    buttonError.addEventListener('click', removeErrorMessageHandler);
+  var errorLoadOffersHandler = function (response) {
+    window.messages.errorLoadHandler(response);
+    window.messages.displayOffMessageHandler();
+    disablePage();
   };
 
-  var removeErrorMessageHandler = function () {
-    if (document.querySelector('div[name="error__message"]') !== null) {
-      document.querySelector('div[name="error__message"]').remove();
-      disablePage();
-    }
-  };
+  // Кусок для задания 6.3
+  // var uploadOfferHandler = function (response) {
+  //   window.messages.successUploadDataHandler(response);
+  //   window.messages.displayOffMessageHandler();
+  //   disablePage();
+  // };
 
   // Прослушка событий на главной метке
   window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
@@ -84,7 +81,7 @@
     window.locality.mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
     window.locality.mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
 
-    window.backend.loadData(showLoadedOffersHandler, errorGetLoadedOffersHandler);
+    window.backend.loadData(showLoadedOffersHandler, errorLoadOffersHandler);
 
     window.form.setRequirementsTitle();
     window.form.setRequirementsPrice();
