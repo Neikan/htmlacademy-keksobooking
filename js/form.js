@@ -10,13 +10,6 @@
   var adForm = document.querySelector('.ad-form');
   var adFormFieldsets = adForm.querySelectorAll('input, select, fieldset');
 
-  var RoomPrices = {
-    palace: 10000,
-    house: 5000,
-    flat: 1000,
-    bungalo: 0
-  };
-
   // Атрибуты формы объявления
   var adFormAvatar = adForm.querySelector('#avatar');
   var adFormTitle = adForm.querySelector('#title');
@@ -29,6 +22,9 @@
   var adFormTimeOut = adForm.querySelector('#timeout');
   var adFormPhotos = adForm.querySelector('#images');
 
+  var adFormButtonUpload = adForm.querySelector('ad-form__submit');
+  var adFormButtonClear = adForm.querySelector('ad-form__reset');
+
   // Органичения для названия объявления
   var setRequirementsTitle = function () {
     adFormTitle.setAttribute('minlength', MIN_TITLE_LENGTH);
@@ -38,8 +34,8 @@
 
   // Органичения и предустановки для цены
   var setRequirementsPrice = function () {
-    adFormPrice.placeholder = RoomPrices[adFormType.value];
-    adFormPrice.min = RoomPrices[adFormType.value];
+    adFormPrice.placeholder = window.data.RoomPrices[adFormType.value];
+    adFormPrice.min = window.data.RoomPrices[adFormType.value];
     adFormPrice.max = MAX_PRICE;
     adFormPrice.setAttribute('required', true);
   };
@@ -87,8 +83,8 @@
   // Валидация цены в зависимости от типа жилья
   var validatePrice = function (evt) {
     if (evt.target === adFormType) {
-      adFormPrice.placeholder = RoomPrices[adFormType.value];
-      adFormPrice.min = RoomPrices[adFormType.value];
+      adFormPrice.placeholder = window.data.RoomPrices[adFormType.value];
+      adFormPrice.min = window.data.RoomPrices[adFormType.value];
     }
   };
 
@@ -103,6 +99,8 @@
     adForm: adForm,
     adFormFieldsets: adFormFieldsets,
     adFormAddress: adFormAddress,
+    adFormButtonUpload: adFormButtonUpload,
+    adFormButtonClear: adFormButtonClear,
 
     setRequirementsTitle: setRequirementsTitle,
     setRequirementsPrice: setRequirementsPrice,

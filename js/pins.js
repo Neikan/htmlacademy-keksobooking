@@ -5,17 +5,14 @@
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
 
-
-  var OFFER_QUANTITY = 8;
-
-  var offers;
+  var PINS_QUANTITY = 8;
 
   // Получение шаблона метки
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   // Хендлер для открытия карточки по клику на метку
   var pinClickHandler = function (evt) {
-    window.card.openCard(window.pins.offers[evt.target.closest('button[offer-id]').getAttribute('offer-id')]);
+    window.card.openCard(window.data.offers[evt.target.closest('button[offer-id]').getAttribute('offer-id')]);
   };
 
   // Отрисовка метки объявления с учетом размеров метки
@@ -36,14 +33,13 @@
   // Размещение объявлений
   var placePins = function (items) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < OFFER_QUANTITY; i++) {
+    for (var i = 0; i < PINS_QUANTITY; i++) {
       fragment.appendChild(renderPin(items[i], i));
     }
     return fragment;
   };
 
   window.pins = {
-    offers: offers,
     renderPin: renderPin,
     placePins: placePins
   };

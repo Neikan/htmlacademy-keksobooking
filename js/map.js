@@ -36,9 +36,8 @@
     window.utils.enableElements(mapFiltersFieldsets);
     window.utils.enableElements(window.form.adFormFieldsets);
 
-    window.pins.offers = window.utils.getShuffleArray(responseItems);
-    map.insertBefore(window.pins.placePins(window.pins.offers), mapFiltersContainer);
-    map.insertBefore(document.createDocumentFragment().appendChild(window.card.renderCard(window.pins.offers[0])), mapFiltersContainer);
+    window.data.offers = responseItems;
+    map.insertBefore(window.pins.placePins(window.data.offers), mapFiltersContainer);
   };
 
   var errorLoadOffersHandler = function (response) {
@@ -52,6 +51,16 @@
   //   window.messages.successUploadDataHandler(response);
   //   window.messages.displayOffMessageHandler();
   //   disablePage();
+  // };
+
+  // var uploadButtonClickHandler = function (evt) {
+  //   evt.preventDefault();
+  //   window.uploadData(new FormData(window.form.adForm), uploadOfferHandler, errorLoadOffersHandler);
+  //   disablePage();
+  // };
+
+  // var clearButtonClickhandler = function () {
+
   // };
 
   // Прослушка событий на главной метке
@@ -88,6 +97,10 @@
     window.form.setRequirementsImages();
     window.form.setRequirementsAddress();
     window.locality.getAddress(true);
+
+    // Кусок для задания 6.3
+    // window.form.adFormButtonUpload.addEventListener('click', uploadButtonClickHandler);
+    // window.form.adFormButtonClear.addEventListener('click', clearButtonClickhandler);
 
     document.addEventListener('keydown', mapKeyDownHandler);
     window.form.adForm.addEventListener('change', adFormChangeHandler);
