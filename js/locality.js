@@ -4,13 +4,19 @@
 
   var MAIN_PIN_AFTER_HEIGHT = 17; // 22px - 5px border
 
+  var LOCATION_X_MIN = 0;
+  var LOCATION_Y_MIN = 130;
+  var LOCATION_Y_MAX = 630;
+
+  var locationXMax = Math.floor(document.querySelector('.map__overlay').offsetWidth);
+
   var mainPin = document.querySelector('.map__pin--main');
 
   var limitMainPin = {
-    left: window.data.LOCATION_X_MIN - Math.round(mainPin.offsetWidth / 2),
-    right: window.data.locationXMax - Math.round(mainPin.offsetWidth / 2),
-    top: window.data.LOCATION_Y_MIN - mainPin.offsetHeight - MAIN_PIN_AFTER_HEIGHT,
-    bottom: window.data.LOCATION_Y_MAX - mainPin.offsetHeight - MAIN_PIN_AFTER_HEIGHT
+    left: LOCATION_X_MIN - Math.round(mainPin.offsetWidth / 2),
+    right: locationXMax - Math.round(mainPin.offsetWidth / 2),
+    top: LOCATION_Y_MIN - mainPin.offsetHeight - MAIN_PIN_AFTER_HEIGHT,
+    bottom: LOCATION_Y_MAX - mainPin.offsetHeight - MAIN_PIN_AFTER_HEIGHT
   };
 
   // Получение координат главной метки для адреса

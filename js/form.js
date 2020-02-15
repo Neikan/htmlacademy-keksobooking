@@ -22,6 +22,9 @@
   var adFormTimeOut = adForm.querySelector('#timeout');
   var adFormPhotos = adForm.querySelector('#images');
 
+  var adFormButtonUpload = adForm.querySelector('ad-form__submit');
+  var adFormButtonClear = adForm.querySelector('ad-form__reset');
+
   // Органичения для названия объявления
   var setRequirementsTitle = function () {
     adFormTitle.setAttribute('minlength', MIN_TITLE_LENGTH);
@@ -31,8 +34,8 @@
 
   // Органичения и предустановки для цены
   var setRequirementsPrice = function () {
-    adFormPrice.placeholder = window.data.RoomPrices[adFormType.value];
-    adFormPrice.min = window.data.RoomPrices[adFormType.value];
+    adFormPrice.placeholder = window.data.housingData[adFormType.value].price;
+    adFormPrice.min = window.data.housingData[adFormType.value].price;
     adFormPrice.max = MAX_PRICE;
     adFormPrice.setAttribute('required', true);
   };
@@ -80,8 +83,8 @@
   // Валидация цены в зависимости от типа жилья
   var validatePrice = function (evt) {
     if (evt.target === adFormType) {
-      adFormPrice.placeholder = window.data.RoomPrices[adFormType.value];
-      adFormPrice.min = window.data.RoomPrices[adFormType.value];
+      adFormPrice.placeholder = window.data.housingData[adFormType.value].price;
+      adFormPrice.min = window.data.housingData[adFormType.value].price;
     }
   };
 
@@ -96,6 +99,8 @@
     adForm: adForm,
     adFormFieldsets: adFormFieldsets,
     adFormAddress: adFormAddress,
+    adFormButtonUpload: adFormButtonUpload,
+    adFormButtonClear: adFormButtonClear,
 
     setRequirementsTitle: setRequirementsTitle,
     setRequirementsPrice: setRequirementsPrice,

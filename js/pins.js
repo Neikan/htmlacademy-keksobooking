@@ -2,6 +2,11 @@
 
 (function () {
 
+  var PIN_WIDTH = 50;
+  var PIN_HEIGHT = 70;
+
+  var PINS_QUANTITY = 8;
+
   // Получение шаблона метки
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
@@ -16,8 +21,8 @@
 
     pinElement.querySelector('img').src = offerItem.author.avatar;
     pinElement.querySelector('img').alt = offerItem.offer.title;
-    pinElement.style.left = (offerItem.location.x - window.data.PIN_WIDTH / 2) + 'px';
-    pinElement.style.top = (offerItem.location.y - window.data.PIN_HEIGHT) + 'px';
+    pinElement.style.left = (offerItem.location.x - PIN_WIDTH / 2) + 'px';
+    pinElement.style.top = (offerItem.location.y - PIN_HEIGHT) + 'px';
 
     pinElement.setAttribute('offer-id', i);
     pinElement.addEventListener('click', pinClickHandler);
@@ -26,11 +31,10 @@
   };
 
   // Размещение объявлений
-  var placePins = function (offers) {
+  var placePins = function (items) {
     var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < offers.length; i++) {
-      fragment.appendChild(renderPin(offers[i], i));
+    for (var i = 0; i < PINS_QUANTITY; i++) {
+      fragment.appendChild(renderPin(items[i], i));
     }
     return fragment;
   };

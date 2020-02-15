@@ -2,9 +2,6 @@
 
 (function () {
 
-  var KEYCODE_ENTER = 13;
-  var KEYCODE_ESC = 27;
-
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
   var mapFiltersFieldsets = map.querySelectorAll('input, select, fieldset');
@@ -17,7 +14,7 @@
   };
 
   var mainPinKeyDownHandler = function (evt) {
-    if (evt.keyCode === KEYCODE_ENTER) {
+    if (evt.keyCode === window.utils.KEYCODE_ENTER) {
       enablePage();
     }
   };
@@ -27,10 +24,44 @@
   };
 
   var mapKeyDownHandler = function (evt) {
-    if (evt.keyCode === KEYCODE_ESC) {
+    if (evt.keyCode === window.utils.KEYCODE_ESC) {
       window.card.closeCard();
     }
   };
+
+  var showLoadedOffersHandler = function (responseItems) {
+    map.classList.remove('map--faded');
+    window.form.adForm.classList.remove('ad-form--disabled');
+    window.form.adFormAddress.classList.add('ad-form--disabled');
+    window.utils.enableElements(mapFiltersFieldsets);
+    window.utils.enableElements(window.form.adFormFieldsets);
+
+    window.data.offers = responseItems;
+    map.insertBefore(window.pins.placePins(window.data.offers), mapFiltersContainer);
+  };
+
+  var errorLoadOffersHandler = function (response) {
+    window.messages.errorLoadHandler(response);
+    window.messages.displayOffMessageHandler();
+    disablePage();
+  };
+
+  // Кусок для задания 6.3
+  // var uploadOfferHandler = function (response) {
+  //   window.messages.successUploadDataHandler(response);
+  //   window.messages.displayOffMessageHandler();
+  //   disablePage();
+  // };
+
+  // var uploadButtonClickHandler = function (evt) {
+  //   evt.preventDefault();
+  //   window.uploadData(new FormData(window.form.adForm), uploadOfferHandler, errorLoadOffersHandler);
+  //   disablePage();
+  // };
+
+  // var clearButtonClickhandler = function () {
+
+  // };
 
   // Прослушка событий на главной метке
   window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
@@ -58,16 +89,8 @@
   var enablePage = function () {
     window.locality.mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
     window.locality.mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
-    // adForm.setAttribute('action', 'https://js.dump.academy/keksobooking/data'); // П.5 из ТЗ
 
-    map.classList.remove('map--faded');
-    window.form.adForm.classList.remove('ad-form--disabled');
-    window.form.adFormAddress.classList.add('ad-form--disabled');
-    window.utils.enableElements(mapFiltersFieldsets);
-    window.utils.enableElements(window.form.adFormFieldsets);
-
-    map.insertBefore(window.pins.placePins(window.data.offers), mapFiltersContainer);
-    map.insertBefore(document.createDocumentFragment().appendChild(window.card.renderCard(window.data.offers[0])), mapFiltersContainer);
+    window.backend.loadData(showLoadedOffersHandler, errorLoadOffersHandler);
 
     window.form.setRequirementsTitle();
     window.form.setRequirementsPrice();
@@ -75,7 +98,11 @@
     window.form.setRequirementsAddress();
     window.locality.getAddress(true);
 
-    map.addEventListener('keydown', mapKeyDownHandler);
+    // Кусок для задания 6.3
+    // window.form.adFormButtonUpload.addEventListener('click', uploadButtonClickHandler);
+    // window.form.adFormButtonClear.addEventListener('click', clearButtonClickhandler);
+
+    document.addEventListener('keydown', mapKeyDownHandler);
     window.form.adForm.addEventListener('change', adFormChangeHandler);
   };
 
