@@ -39,9 +39,17 @@
     return fragment;
   };
 
+  var removePins = function () {
+    var pinItems = document.querySelectorAll('button[offer-id]');
+    pinItems.forEach(function (pinItem) {
+      pinItem.remove();
+    });
+  };
+
   window.pins = {
     renderPin: renderPin,
-    placePins: placePins
+    placePins: placePins,
+    removePins: removePins
   };
 
 })();

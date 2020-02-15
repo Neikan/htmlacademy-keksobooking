@@ -38,30 +38,41 @@
 
     window.data.offers = responseItems;
     map.insertBefore(window.pins.placePins(window.data.offers), mapFiltersContainer);
+
+    window.form.setRequirementsTitle();
+    window.form.setRequirementsPrice();
+    window.form.setRequirementsImages();
+    window.form.setRequirementsAddress();
+
   };
 
   var errorLoadOffersHandler = function (response) {
-    window.messages.errorLoadHandler(response);
+    window.messages.displayErrorMessageHandler(response);
     window.messages.displayOffMessageHandler();
     disablePage();
   };
 
-  // Кусок для задания 6.3
-  // var uploadOfferHandler = function (response) {
-  //   window.messages.successUploadDataHandler(response);
-  //   window.messages.displayOffMessageHandler();
-  //   disablePage();
-  // };
+  // 6.3
+  var uploadOfferDataHandler = function () {
+    window.messages.displaySuccessMessageHandler();
+    window.messages.displayOffMessageHandler();
+    disablePage();
+  };
 
-  // var uploadButtonClickHandler = function (evt) {
-  //   evt.preventDefault();
-  //   window.uploadData(new FormData(window.form.adForm), uploadOfferHandler, errorLoadOffersHandler);
-  //   disablePage();
-  // };
+  var errorUploadOfferDataHandler = function (response) {
+    window.messages.displayErrorMessageHandler(response);
+    window.messages.displayOffMessageHandler();
+  };
 
-  // var clearButtonClickhandler = function () {
+  var clearButtonClickhandler = function () {
+    window.messages.displayClearMessageHandler();
+    window.messages.displayOffMessageHandler();
+  };
 
-  // };
+  var uploadButtonClickHandler = function (evt) {
+    evt.preventDefault();
+    window.backend.serverRequest(window.backend.RequestType.POST, window.backend.RequestUrl.URL_POST, uploadOfferDataHandler, errorUploadOfferDataHandler, new FormData(window.form.adForm));
+  };
 
   // Прослушка событий на главной метке
   window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
@@ -76,11 +87,16 @@
     window.utils.disableElements(mapFiltersFieldsets);
     window.utils.disableElements(window.form.adFormFieldsets);
 
+    window.pins.removePins();
+    window.form.adForm.reset();
     window.form.setRequirementsPrice();
+    window.locality.setMainPinDefaultCoordinate();
     window.locality.getAddress(false);
 
     map.removeEventListener('keydown', mapKeyDownHandler);
     window.form.adForm.removeEventListener('change', adFormChangeHandler);
+    window.form.adFormButtonUpload.removeEventListener('submit', uploadButtonClickHandler);
+    window.form.adFormButtonClear.removeEventListener('click', clearButtonClickhandler);
   };
 
   disablePage();
@@ -89,21 +105,14 @@
   var enablePage = function () {
     window.locality.mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
     window.locality.mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
+    window.backend.serverRequest(window.backend.RequestType.GET, window.backend.RequestUrl.URL_GET, showLoadedOffersHandler, errorLoadOffersHandler);
 
-    window.backend.loadData(showLoadedOffersHandler, errorLoadOffersHandler);
-
-    window.form.setRequirementsTitle();
-    window.form.setRequirementsPrice();
-    window.form.setRequirementsImages();
-    window.form.setRequirementsAddress();
     window.locality.getAddress(true);
-
-    // Кусок для задания 6.3
-    // window.form.adFormButtonUpload.addEventListener('click', uploadButtonClickHandler);
-    // window.form.adFormButtonClear.addEventListener('click', clearButtonClickhandler);
 
     document.addEventListener('keydown', mapKeyDownHandler);
     window.form.adForm.addEventListener('change', adFormChangeHandler);
+    window.form.adForm.addEventListener('submit', uploadButtonClickHandler);
+    window.form.adFormButtonClear.addEventListener('click', clearButtonClickhandler);
   };
 
   window.map = {
