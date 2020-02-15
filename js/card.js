@@ -8,23 +8,24 @@
   // Добавление преимуществ
   var renderFeatures = function (element, features) {
     element.innerHTML = '';
-    for (var i = 0; i < features.length; i++) {
+
+    features.forEach(function (feature) {
       var featureItem = document.createElement('li');
       featureItem.classList.add('popup__feature');
-      featureItem.classList.add('popup__feature--' + features[i]);
+      featureItem.classList.add('popup__feature--' + feature);
       element.appendChild(featureItem);
-    }
+    });
   };
 
   // Добавление фото
   var renderPhotos = function (element, photos) {
     var photoItemTemplate = element.querySelector('img');
     element.innerHTML = '';
-    for (var i = 0; i < photos.length; i++) {
+    photos.forEach(function (photo) {
       var photoItem = photoItemTemplate.cloneNode(true);
-      photoItem.src = photos[i];
+      photoItem.src = photo;
       element.appendChild(photoItem);
-    }
+    });
   };
 
   // Выбор строки для комнаты

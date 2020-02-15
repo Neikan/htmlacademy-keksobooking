@@ -12,6 +12,19 @@
 
   var mainPin = document.querySelector('.map__pin--main');
 
+  var getMainPinDefaultCoordinates = function () {
+    return {
+      x: mainPin.style.left,
+      y: mainPin.style.top
+    };
+  };
+  var defaultCoordinate = getMainPinDefaultCoordinates();
+
+  var setMainPinDefaultCoordinate = function () {
+    mainPin.style.left = defaultCoordinate.x;
+    mainPin.style.top = defaultCoordinate.y;
+  };
+
   var limitMainPin = {
     left: LOCATION_X_MIN - Math.round(mainPin.offsetWidth / 2),
     right: locationXMax - Math.round(mainPin.offsetWidth / 2),
@@ -88,7 +101,8 @@
 
   window.locality = {
     mainPin: mainPin,
-    getAddress: getAddress
+    getAddress: getAddress,
+    setMainPinDefaultCoordinate: setMainPinDefaultCoordinate
   };
 
 })();

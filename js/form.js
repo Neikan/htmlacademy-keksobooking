@@ -2,7 +2,7 @@
 
 (function () {
 
-  var MIN_TITLE_LENGTH = 2; // Потом поменять на 30 согласно ТЗ
+  var MIN_TITLE_LENGTH = 30; // Потом поменять на 30 согласно ТЗ
   var MAX_TITLE_LENGTH = 100;
 
   var MAX_PRICE = 1000000;
@@ -22,8 +22,8 @@
   var adFormTimeOut = adForm.querySelector('#timeout');
   var adFormPhotos = adForm.querySelector('#images');
 
-  var adFormButtonUpload = adForm.querySelector('ad-form__submit');
-  var adFormButtonClear = adForm.querySelector('ad-form__reset');
+  var adFormButtonUpload = adForm.querySelector('.ad-form__submit');
+  var adFormButtonClear = adForm.querySelector('.ad-form__reset');
 
   // Органичения для названия объявления
   var setRequirementsTitle = function () {
@@ -48,7 +48,7 @@
 
   // Получение и деактивация ввода адреса
   var setRequirementsAddress = function () {
-    adFormAddress.setAttribute('disabled', true);
+    adFormAddress.setAttribute('readonly', true);
     adFormAddress.classList.add('ad-form--disabled');
   };
 

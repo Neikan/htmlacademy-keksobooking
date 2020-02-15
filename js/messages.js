@@ -2,23 +2,28 @@
 
 (function () {
 
-  var errorLoadHandler = function (errorMessage) {
-    var messageTemplate = document.querySelector('#error').content.querySelector('.error');
+  var clearMessageText = 'Форма объявления очищена';
 
+  var getMessageTemplate = function (messageType) {
+    var messageTemplate = document.querySelector('#' + messageType).content.querySelector('.' + messageType);
     var message = messageTemplate.cloneNode(true);
     message.setAttribute('name', 'message');
-    message.querySelector('.error__message').textContent = errorMessage;
+    return message;
+  };
 
+  var displayErrorMessageHandler = function (messageText) {
+    var message = getMessageTemplate('error');
+    message.querySelector('.error__message').textContent = messageText;
     document.querySelector('main').insertAdjacentElement('afterbegin', message);
   };
 
-  var successUploadDataHandler = function (errorMessage) {
-    var messageTemplate = document.querySelector('#success').content.querySelector('.success');
+  var displaySuccessMessageHandler = function () {
+    document.querySelector('main').insertAdjacentElement('afterbegin', getMessageTemplate('success'));
+  };
 
-    var message = messageTemplate.cloneNode(true);
-    message.setAttribute('name', 'message');
-    message.querySelector('.success__message').textContent = errorMessage;
-
+  var displayClearMessageHandler = function () {
+    var message = getMessageTemplate('success');
+    message.querySelector('.success__message').textContent = clearMessageText;
     document.querySelector('main').insertAdjacentElement('afterbegin', message);
   };
 
@@ -41,11 +46,10 @@
   };
 
   window.messages = {
-    errorLoadHandler: errorLoadHandler,
-    successUploadDataHandler: successUploadDataHandler,
+    displayErrorMessageHandler: displayErrorMessageHandler,
+    displaySuccessMessageHandler: displaySuccessMessageHandler,
     displayOffMessageHandler: displayOffMessageHandler,
-    removeMessageHandler: removeMessageHandler,
-    messageKeyDownHandler: messageKeyDownHandler
+    displayClearMessageHandler: displayClearMessageHandler
   };
 
 })();
