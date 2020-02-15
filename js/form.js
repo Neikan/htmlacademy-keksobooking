@@ -34,8 +34,8 @@
 
   // Органичения и предустановки для цены
   var setRequirementsPrice = function () {
-    adFormPrice.placeholder = window.data.RoomPrices[adFormType.value];
-    adFormPrice.min = window.data.RoomPrices[adFormType.value];
+    adFormPrice.placeholder = window.data.housingData[adFormType.value].price;
+    adFormPrice.min = window.data.housingData[adFormType.value].price;
     adFormPrice.max = MAX_PRICE;
     adFormPrice.setAttribute('required', true);
   };
@@ -83,8 +83,8 @@
   // Валидация цены в зависимости от типа жилья
   var validatePrice = function (evt) {
     if (evt.target === adFormType) {
-      adFormPrice.placeholder = window.data.RoomPrices[adFormType.value];
-      adFormPrice.min = window.data.RoomPrices[adFormType.value];
+      adFormPrice.placeholder = window.data.housingData[adFormType.value].price;
+      adFormPrice.min = window.data.housingData[adFormType.value].price;
     }
   };
 
