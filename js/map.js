@@ -30,14 +30,15 @@
   };
 
   var showLoadedOffersHandler = function (responseItems) {
+    window.data.offers = responseItems;
+    window.data.offersForPins = window.data.offers;
+    map.insertBefore(window.pins.placePins(window.data.offersForPins), mapFiltersContainer);
+
     map.classList.remove('map--faded');
     window.form.adForm.classList.remove('ad-form--disabled');
     window.form.adFormAddress.classList.add('ad-form--disabled');
     window.utils.enableElements(mapFiltersFieldsets);
     window.utils.enableElements(window.form.adFormFieldsets);
-
-    window.data.offers = responseItems;
-    map.insertBefore(window.pins.placePins(window.data.offers), mapFiltersContainer);
 
     window.form.setRequirementsTitle();
     window.form.setRequirementsPrice();

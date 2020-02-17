@@ -2,7 +2,8 @@
 
 (function () {
 
-  var offers;
+  var offers = [];
+  var offersForPins = [];
 
   var housingData = {
     palace: {
@@ -28,6 +29,7 @@
 
   window.data = {
     offers: offers,
+    offersForPins: offersForPins,
     housingData: housingData
   };
 
