@@ -31,8 +31,7 @@
 
   var showLoadedOffersHandler = function (responseItems) {
     window.data.offers = responseItems;
-    window.data.offersForPins = window.data.offers;
-    map.insertBefore(window.pins.placePins(window.data.offersForPins), mapFiltersContainer);
+    map.insertBefore(window.pins.placePins(window.data.offers), mapFiltersContainer);
 
     map.classList.remove('map--faded');
     window.form.adForm.classList.remove('ad-form--disabled');

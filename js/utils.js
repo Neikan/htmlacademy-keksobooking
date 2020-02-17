@@ -4,6 +4,7 @@
 
   var KEYCODE_ENTER = 13;
   var KEYCODE_ESC = 27;
+  var DEBOUNCE_INTERVAL = 500;
 
   // Включение элементов
   var enableElements = function (elements) {
@@ -52,6 +53,23 @@
     return array;
   };
 
+  // Функция устранения "разрыва"
+  var debounce = function (callbackFunc) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+
+      lastTimeout = window.setTimeout(function () {
+        callbackFunc.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   window.utils = {
     KEYCODE_ENTER: KEYCODE_ENTER,
     KEYCODE_ESC: KEYCODE_ESC,
@@ -60,7 +78,8 @@
     getRandomArray: getRandomArray,
     getShuffleArray: getShuffleArray,
     enableElements: enableElements,
-    disableElements: disableElements
+    disableElements: disableElements,
+    debounce: debounce
   };
 
 })();

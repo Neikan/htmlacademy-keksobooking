@@ -2,20 +2,25 @@
 
 (function () {
 
+  var defaultFilterValue = 'any';
+
   var housingSelect = window.map.mapFiltersContainer.querySelector('#housing-type');
-  var housingSelectDefaultValue = housingSelect.value;
 
   housingSelect.addEventListener('change', function () {
-    window.pins.removePins();
     window.card.closeCard();
-    updatePins();
+    window.pins.removePins();
+    window.pins.updatePins();
   });
 
-  var updatePins = function () {
-    window.data.offersForPins = window.data.offers.filter(function (item) {
-      return housingSelect.value !== housingSelectDefaultValue ? item.offer.type === housingSelect.value : item.offer.type;
+  var filteringOffers = function (offers) {
+    var filteredOffers = offers.filter(function (item) {
+      return housingSelect.value !== defaultFilterValue ? item.offer.type === housingSelect.value : item.offer.type;
     });
-    window.map.map.insertBefore(window.pins.placePins(window.data.offersForPins), window.map.mapFiltersContainer);
+    return filteredOffers.slice(0, window.pins.PINS_QUANTITY);
+  };
+
+  window.filters = {
+    filteringOffers: filteringOffers
   };
 
 })();

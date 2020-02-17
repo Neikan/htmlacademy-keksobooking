@@ -12,7 +12,7 @@
 
   // Хендлер для открытия карточки по клику на метку
   var pinClickHandler = function (evt) {
-    window.card.openCard(window.data.offersForPins[evt.target.closest('button[offer-id]').getAttribute('offer-id')]);
+    window.card.openCard(window.filters.filteringOffers(window.data.offers)[evt.target.closest('button[offer-id]').getAttribute('offer-id')]);
   };
 
   // Отрисовка метки объявления с учетом размеров метки
@@ -47,10 +47,16 @@
     });
   };
 
+  var updatePins = window.utils.debounce(function () {
+    window.map.map.insertBefore(window.pins.placePins(window.filters.filteringOffers(window.data.offers)), window.map.mapFiltersContainer);
+  });
+
   window.pins = {
+    PINS_QUANTITY: PINS_QUANTITY,
     renderPin: renderPin,
     placePins: placePins,
-    removePins: removePins
+    removePins: removePins,
+    updatePins: updatePins
   };
 
 })();
