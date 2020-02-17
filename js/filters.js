@@ -13,10 +13,9 @@
   });
 
   var filteringOffers = function (offers) {
-    var filteredOffers = offers.filter(function (item) {
+    return offers.filter(function (item) {
       return housingSelect.value !== defaultFilterValue ? item.offer.type === housingSelect.value : item.offer.type;
-    });
-    return filteredOffers.slice(0, window.pins.PINS_QUANTITY);
+    }).slice(0, window.pins.PINS_QUANTITY);
   };
 
   window.filters = {
