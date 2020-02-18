@@ -75,15 +75,16 @@
     }).slice(0, window.pins.PINS_QUANTITY);
   };
 
-  mapFiltersForm.addEventListener('change', function () {
+  var mapFiltersFormChangeHandler = function () {
     window.card.closeCard();
     window.pins.removePins();
     window.pins.updatePins();
-  });
+  };
 
   window.filters = {
     filteringOffers: filteringOffers,
-    mapFiltersForm: mapFiltersForm
+    mapFiltersForm: mapFiltersForm,
+    mapFiltersFormChangeHandler: mapFiltersFormChangeHandler
   };
 
 })();

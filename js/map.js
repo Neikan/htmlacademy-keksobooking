@@ -22,7 +22,7 @@
     window.form.validationForm(evt);
   };
 
-  var mapKeyDownHandler = function (evt) {
+  var documentKeyDownHandler = function (evt) {
     if (evt.keyCode === window.utils.KEYCODE_ESC) {
       window.card.closeCard();
     }
@@ -95,10 +95,11 @@
     window.locality.setMainPinDefaultCoordinate();
     window.locality.getAddress(false);
 
-    map.removeEventListener('keydown', mapKeyDownHandler);
+    document.removeEventListener('keydown', documentKeyDownHandler);
     window.form.adForm.removeEventListener('change', adFormChangeHandler);
     window.form.adFormButtonUpload.removeEventListener('submit', uploadButtonClickHandler);
     window.form.adFormButtonClear.removeEventListener('click', clearButtonClickhandler);
+    window.filters.mapFiltersForm.removeEventListener('change', window.filters.mapFiltersFormChangeHandler);
   };
 
   disablePage();
@@ -111,10 +112,11 @@
 
     window.locality.getAddress(true);
 
-    document.addEventListener('keydown', mapKeyDownHandler);
+    document.addEventListener('keydown', documentKeyDownHandler);
     window.form.adForm.addEventListener('change', adFormChangeHandler);
     window.form.adForm.addEventListener('submit', uploadButtonClickHandler);
     window.form.adFormButtonClear.addEventListener('click', clearButtonClickhandler);
+    window.filters.mapFiltersForm.addEventListener('change', window.filters.mapFiltersFormChangeHandler);
   };
 
   window.map = {
