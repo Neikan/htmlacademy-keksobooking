@@ -2,7 +2,7 @@
 
 (function () {
 
-  var offers;
+  var offers = [];
 
   var housingData = {
     palace: {

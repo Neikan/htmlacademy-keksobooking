@@ -5,14 +5,14 @@
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
 
-  var PINS_QUANTITY = 8;
+  var PINS_QUANTITY = 5;
 
   // Получение шаблона метки
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
   // Хендлер для открытия карточки по клику на метку
   var pinClickHandler = function (evt) {
-    window.card.openCard(window.data.offers[evt.target.closest('button[offer-id]').getAttribute('offer-id')]);
+    window.card.openCard(window.filters.filteringOffers(window.data.offers)[evt.target.closest('button[offer-id]').getAttribute('offer-id')]);
   };
 
   // Отрисовка метки объявления с учетом размеров метки
@@ -32,8 +32,9 @@
 
   // Размещение объявлений
   var placePins = function (items) {
+    var pinsCount = items.length > PINS_QUANTITY ? PINS_QUANTITY : items.length;
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < PINS_QUANTITY; i++) {
+    for (var i = 0; i < pinsCount; i++) {
       fragment.appendChild(renderPin(items[i], i));
     }
     return fragment;
@@ -46,10 +47,16 @@
     });
   };
 
+  var updatePins = window.utils.debounce(function () {
+    window.map.map.insertBefore(window.pins.placePins(window.filters.filteringOffers(window.data.offers)), window.map.mapFiltersContainer);
+  });
+
   window.pins = {
+    PINS_QUANTITY: PINS_QUANTITY,
     renderPin: renderPin,
     placePins: placePins,
-    removePins: removePins
+    removePins: removePins,
+    updatePins: updatePins
   };
 
 })();
