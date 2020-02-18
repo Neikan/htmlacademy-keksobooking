@@ -4,7 +4,6 @@
 
   var map = document.querySelector('.map');
   var mapFiltersContainer = map.querySelector('.map__filters-container');
-  var mapFiltersFieldsets = map.querySelectorAll('input, select, fieldset');
 
   // Хендлеры
   var mainPinMouseDownHandler = function (evt) {
@@ -36,7 +35,7 @@
     map.classList.remove('map--faded');
     window.form.adForm.classList.remove('ad-form--disabled');
     window.form.adFormAddress.classList.add('ad-form--disabled');
-    window.utils.enableElements(mapFiltersFieldsets);
+    window.utils.enableElements(window.filters.mapFiltersForm);
     window.utils.enableElements(window.form.adFormFieldsets);
 
     window.form.setRequirementsTitle();
@@ -52,21 +51,23 @@
     disablePage();
   };
 
-  // 6.3
   var uploadOfferDataHandler = function () {
+    window.card.closeCard();
     window.messages.displaySuccessMessageHandler();
     window.messages.displayOffMessageHandler();
     disablePage();
   };
 
   var errorUploadOfferDataHandler = function (response) {
+    window.card.closeCard();
     window.messages.displayErrorMessageHandler(response);
     window.messages.displayOffMessageHandler();
   };
 
-  var clearButtonClickhandler = function () {
-    window.messages.displayClearMessageHandler();
-    window.messages.displayOffMessageHandler();
+  var clearButtonClickhandler = function (evt) {
+    evt.preventDefault();
+    window.card.closeCard();
+    disablePage();
   };
 
   var uploadButtonClickHandler = function (evt) {
@@ -84,10 +85,11 @@
     window.locality.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
     map.classList.add('map--faded');
     window.form.adForm.classList.add('ad-form--disabled');
-    window.utils.disableElements(mapFiltersFieldsets);
+    window.utils.disableElements(window.filters.mapFiltersForm);
     window.utils.disableElements(window.form.adFormFieldsets);
 
     window.pins.removePins();
+    window.filters.mapFiltersForm.reset();
     window.form.adForm.reset();
     window.form.setRequirementsPrice();
     window.locality.setMainPinDefaultCoordinate();
@@ -116,8 +118,7 @@
   };
 
   window.map = {
-    map: map,
-    mapFiltersContainer: mapFiltersContainer
+    map: map
   };
 
 })();

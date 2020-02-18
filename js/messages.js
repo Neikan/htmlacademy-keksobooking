@@ -2,8 +2,6 @@
 
 (function () {
 
-  var clearMessageText = 'Форма объявления очищена';
-
   var getMessageTemplate = function (messageType) {
     var messageTemplate = document.querySelector('#' + messageType).content.querySelector('.' + messageType);
     var message = messageTemplate.cloneNode(true);
@@ -19,12 +17,6 @@
 
   var displaySuccessMessageHandler = function () {
     document.querySelector('main').insertAdjacentElement('afterbegin', getMessageTemplate('success'));
-  };
-
-  var displayClearMessageHandler = function () {
-    var message = getMessageTemplate('success');
-    message.querySelector('.success__message').textContent = clearMessageText;
-    document.querySelector('main').insertAdjacentElement('afterbegin', message);
   };
 
   var displayOffMessageHandler = function () {
@@ -48,8 +40,7 @@
   window.messages = {
     displayErrorMessageHandler: displayErrorMessageHandler,
     displaySuccessMessageHandler: displaySuccessMessageHandler,
-    displayOffMessageHandler: displayOffMessageHandler,
-    displayClearMessageHandler: displayClearMessageHandler
+    displayOffMessageHandler: displayOffMessageHandler
   };
 
 })();
