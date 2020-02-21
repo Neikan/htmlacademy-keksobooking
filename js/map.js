@@ -100,6 +100,7 @@
     document.removeEventListener('keydown', documentKeyDownHandler);
     window.form.adFormAvatarUpload.removeEventListener('change', window.form.adFormAvatarChangeHandler);
     window.form.adFormPhotosUpload.removeEventListener('change', window.form.adFormPhotosChangeHandler);
+    window.form.adFormPhotosPreview.removeEventListener('click', window.form.adFormPhotosClickHandler);
     window.form.adForm.removeEventListener('change', adFormChangeHandler);
     window.form.adFormButtonUpload.removeEventListener('submit', uploadButtonClickHandler);
     window.form.adFormButtonClear.removeEventListener('click', clearButtonClickhandler);
@@ -119,6 +120,7 @@
     document.addEventListener('keydown', documentKeyDownHandler);
     window.form.adFormAvatarUpload.addEventListener('change', window.form.adFormAvatarChangeHandler);
     window.form.adFormPhotosUpload.addEventListener('change', window.form.adFormPhotosChangeHandler);
+    window.form.adFormPhotosPreview.addEventListener('click', window.form.adFormPhotosClickHandler);
     window.form.adForm.addEventListener('change', adFormChangeHandler);
     window.form.adFormButtonUpload.addEventListener('submit', uploadButtonClickHandler);
     window.form.adFormButtonClear.addEventListener('click', clearButtonClickhandler);

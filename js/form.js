@@ -229,6 +229,12 @@
     adFormPhotosPreview.classList.add(window.utils.ClassForPreviewPhoto.CONTAINER);
   };
 
+  var adFormPhotosClickHandler = function () {
+    if (adFormPhotosPreview.children.length === 0) {
+      adFormPhotosPreview.classList.remove(window.utils.ClassForPreviewPhoto.CONTAINER);
+    }
+  };
+
   var resetAdFormPhotosAndAvatar = function () {
     adFormAvatarPreview.src = adFormAvatarPreviewSrc;
 
@@ -236,18 +242,13 @@
     adFormPhotosPreview.classList.remove(window.utils.ClassForPreviewPhoto.CONTAINER);
   };
 
-  // var check = function () {
-  //   if (adFormPhotosPreview.querySelectorAll('.offer__photo__preview__img').length === 0) {
-  //     adFormPhotosPreview.classList.remove(window.utils.ClassForPreviewPhoto.CONTAINER);
-  //   }
-  // }
-
   window.form = {
     adForm: adForm,
     adFormFieldsets: adFormFieldsets,
     adFormAddress: adFormAddress,
     adFormAvatarUpload: adFormAvatarUpload,
     adFormPhotosUpload: adFormPhotosUpload,
+    adFormPhotosPreview: adFormPhotosPreview,
     adFormButtonUpload: adFormButtonUpload,
     adFormButtonClear: adFormButtonClear,
 
@@ -260,7 +261,8 @@
     resetAdFormPhotosAndAvatar: resetAdFormPhotosAndAvatar,
 
     adFormAvatarChangeHandler: adFormAvatarChangeHandler,
-    adFormPhotosChangeHandler: adFormPhotosChangeHandler
+    adFormPhotosChangeHandler: adFormPhotosChangeHandler,
+    adFormPhotosClickHandler: adFormPhotosClickHandler
   };
 
 })();
