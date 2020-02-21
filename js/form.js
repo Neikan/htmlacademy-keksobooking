@@ -213,21 +213,29 @@
     }
   };
 
-  var adFormAvatarUploadHandler = function () {
-    adFormAvatarPreviewSrc = adFormAvatarPreview.src;
+  var adFormAvatarChangeHandler = function () {
     displayPreviewImage(adFormAvatarUpload, adFormAvatarPreview);
   };
 
-  var adFormPhotosUploadHandler = function () {
+  var adFormPhotosChangeHandler = function () {
     adFormPhotosPreview.classList.add(window.utils.ClassForPreviewPhoto.CONTAINER);
     displayPreviewImage(adFormPhotosUpload, adFormPhotosPreview.appendChild(window.utils.createImageElement()));
+    removeAdFormPhotos();
   };
 
-  var resetAdFormImages = function () {
+  var resetAdFormPhotosAndAvatar = function () {
     adFormAvatarPreview.src = adFormAvatarPreviewSrc;
 
     adFormPhotosPreview.innerHTML = '';
     adFormPhotosPreview.classList.remove(window.utils.ClassForPreviewPhoto.CONTAINER);
+  };
+
+  var removeAdFormPhotos = function () {
+    adFormPhotosPreview.querySelectorAll('.' + window.utils.ClassForPreviewPhoto.IMG).forEach(function (item) {
+      item.addEventListener('click', function () {
+        item.remove();
+      });
+    });
   };
 
   window.form = {
@@ -245,10 +253,10 @@
     setRequirementsAddress: setRequirementsAddress,
 
     validationForm: validationForm,
-    resetAdFormImages: resetAdFormImages,
+    resetAdFormPhotosAndAvatar: resetAdFormPhotosAndAvatar,
 
-    adFormAvatarUploadHandler: adFormAvatarUploadHandler,
-    adFormPhotosUploadHandler: adFormPhotosUploadHandler
+    adFormAvatarChangeHandler: adFormAvatarChangeHandler,
+    adFormPhotosChangeHandler: adFormPhotosChangeHandler
   };
 
 })();

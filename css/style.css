@@ -1266,3 +1266,8 @@ fieldset {
   border-radius: 5px;
   background-color: #dadada;
 }
+
+.offer__photo__preview__img:hover,
+.offer__photo__preview__img:focus {
+  border: 1px solid #ff6547;
+}
