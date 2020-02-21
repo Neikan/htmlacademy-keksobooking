@@ -2,13 +2,20 @@
 
 (function () {
 
+  /**
+   *
+   */
   var TIMEOUT = 10000;
+
 
   var RequestUrl = {
     URL_GET: 'https://js.dump.academy/keksobooking/data',
     URL_POST: 'https://js.dump.academy/keksobooking'
   };
 
+  /**
+   *
+   */
   var RequestStatusCode = {
     OK: 200,
     BAD_REQUEST: 400,
@@ -16,11 +23,20 @@
     SERVER_ERROR: 500
   };
 
+  /**
+   *
+   */
   var RequestType = {
     POST: 'POST',
     GET: 'GET'
   };
 
+  /**
+   *
+   * @param {*} xhr
+   * @param {*} successHandler
+   * @param {*} errorHandler
+   */
   var checkStatusXhr = function (xhr, successHandler, errorHandler) {
     switch (xhr.status) {
       case (RequestStatusCode.OK):
@@ -40,6 +56,14 @@
     }
   };
 
+  /**
+   *
+   * @param {string} requestType
+   * @param {string} requestUrl
+   * @param {*} successHandler
+   * @param {*} errorHandler
+   * @param {*} requestData
+   */
   var serverRequest = function (requestType, requestUrl, successHandler, errorHandler, requestData) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';

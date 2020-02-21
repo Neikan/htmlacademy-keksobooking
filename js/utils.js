@@ -6,6 +6,11 @@
   var KEYCODE_ESC = 27;
   var DEBOUNCE_INTERVAL = 500;
 
+  var ClassForPreviewPhoto = {
+    CONTAINER: 'offer__photo__preview__container',
+    IMG: 'offer__photo__preview__img'
+  };
+
   // Включение элементов
   var enableElements = function (elements) {
     for (var i = 0; i < elements.length; i++) {
@@ -20,37 +25,10 @@
     }
   };
 
-  // Получение случайного числа из диапазона
-  var getRandomNumber = function (min, max) {
-    return Math.floor(min + Math.random() * (max + 1 - min));
-  };
-
-  // Получение случайного элемента из массива
-  var getRandomElement = function (arrayElements) {
-    return arrayElements[Math.floor(Math.random() * arrayElements.length)];
-  };
-
-  // Получение подмассива из массива
-  var getRandomArray = function (array) {
-    var lengthNewArray = getRandomNumber(0, array.length);
-    var subArray = [];
-    for (var i = 0; i < lengthNewArray; i++) {
-      subArray.push(array[i]);
-    }
-    return subArray;
-  };
-
-  // Перемешивание массива
-  var getShuffleArray = function (array) {
-    var j;
-    var temp;
-    for (var i = array.length - 1; i > 0; i--) {
-      j = Math.floor(Math.random() * (i + 1));
-      temp = array[j];
-      array[j] = array[i];
-      array[i] = temp;
-    }
-    return array;
+  var createImageElement = function () {
+    var itemImg = document.createElement('img');
+    itemImg.classList.add(ClassForPreviewPhoto.IMG);
+    return itemImg;
   };
 
   // Функция устранения "разрыва"
@@ -73,12 +51,10 @@
   window.utils = {
     KEYCODE_ENTER: KEYCODE_ENTER,
     KEYCODE_ESC: KEYCODE_ESC,
-    getRandomNumber: getRandomNumber,
-    getRandomElement: getRandomElement,
-    getRandomArray: getRandomArray,
-    getShuffleArray: getShuffleArray,
+    ClassForPreviewPhoto: ClassForPreviewPhoto,
     enableElements: enableElements,
     disableElements: disableElements,
+    createImageElement: createImageElement,
     debounce: debounce
   };
 
