@@ -5,7 +5,7 @@
   /**
    * Перечень допустимых расширений файлов для изображаений аватара автора и фотографий объекта объявления
    * @constant {array}*/
-  var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif'];
 
   /**
    * Минимальное количество символов в названии объявления
@@ -196,9 +196,8 @@
     validateRoomAndCapacity();
   };
 
-
   // Для задания 8.2
-  var displayPreviewImage = function (uploadField, previewField) {
+  var displayPreviewImage = function (uploadField, previewField, isCreateNewPreviewItem, newPreviewItem) {
     var file = uploadField.files[0];
     var fileName = file.name.toLowerCase();
     var matches = FILE_TYPES.some(function (it) {
@@ -207,20 +206,27 @@
     if (matches) {
       var reader = new FileReader();
       reader.addEventListener('load', function () {
-        previewField.src = reader.result;
+        if (!isCreateNewPreviewItem) {
+          previewField.src = reader.result;
+        } else {
+          previewField.appendChild(newPreviewItem);
+          newPreviewItem.src = reader.result;
+          newPreviewItem.addEventListener('click', function () {
+            newPreviewItem.remove();
+          });
+        }
       });
       reader.readAsDataURL(file);
     }
   };
 
   var adFormAvatarChangeHandler = function () {
-    displayPreviewImage(adFormAvatarUpload, adFormAvatarPreview);
+    displayPreviewImage(adFormAvatarUpload, adFormAvatarPreview, false);
   };
 
   var adFormPhotosChangeHandler = function () {
+    displayPreviewImage(adFormPhotosUpload, adFormPhotosPreview, true, window.utils.createImageElement());
     adFormPhotosPreview.classList.add(window.utils.ClassForPreviewPhoto.CONTAINER);
-    displayPreviewImage(adFormPhotosUpload, adFormPhotosPreview.appendChild(window.utils.createImageElement()));
-    removeAdFormPhotos();
   };
 
   var resetAdFormPhotosAndAvatar = function () {
@@ -230,13 +236,11 @@
     adFormPhotosPreview.classList.remove(window.utils.ClassForPreviewPhoto.CONTAINER);
   };
 
-  var removeAdFormPhotos = function () {
-    adFormPhotosPreview.querySelectorAll('.' + window.utils.ClassForPreviewPhoto.IMG).forEach(function (item) {
-      item.addEventListener('click', function () {
-        item.remove();
-      });
-    });
-  };
+  // var check = function () {
+  //   if (adFormPhotosPreview.querySelectorAll('.offer__photo__preview__img').length === 0) {
+  //     adFormPhotosPreview.classList.remove(window.utils.ClassForPreviewPhoto.CONTAINER);
+  //   }
+  // }
 
   window.form = {
     adForm: adForm,

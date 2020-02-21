@@ -41,8 +41,7 @@
   };
 
   var removePins = function () {
-    var pinItems = document.querySelectorAll('button[offer-id]');
-    pinItems.forEach(function (pinItem) {
+    document.querySelectorAll('button[offer-id]').forEach(function (pinItem) {
       pinItem.remove();
     });
   };

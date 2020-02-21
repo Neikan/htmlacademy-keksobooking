@@ -26,9 +26,9 @@
   };
 
   var createImageElement = function () {
-    var itemImg = document.createElement('img');
-    itemImg.classList.add(ClassForPreviewPhoto.IMG);
-    return itemImg;
+    var item = document.createElement('img');
+    item.classList.add(ClassForPreviewPhoto.IMG);
+    return item;
   };
 
   // Функция устранения "разрыва"
