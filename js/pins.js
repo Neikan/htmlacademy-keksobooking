@@ -2,20 +2,32 @@
 
 (function () {
 
+  /**
+   * Параметры меток и их количество
+   */
   var PIN_WIDTH = 50;
   var PIN_HEIGHT = 70;
-
   var PINS_QUANTITY = 5;
 
-  // Получение шаблона метки
+  /**
+   * Шаблон метки
+   */
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 
-  // Хендлер для открытия карточки по клику на метку
+  /**
+   * Помощник, открывающий карточку объявления по клику на метке
+   * @param {event} evt
+   */
   var pinClickHandler = function (evt) {
     window.card.openCard(window.filters.filteringOffers(window.data.offers)[evt.target.closest('button[offer-id]').getAttribute('offer-id')]);
   };
 
-  // Отрисовка метки объявления с учетом размеров метки
+  /**
+   * Отрисовка метки объявления с учетом размеров метки
+   * @param {Object} offerItem - элемент массива объявлений
+   * @param {number} i - идентификатор элемента массива объявлений
+   * @return {HTMLElement} - метка для добавления на карту
+   */
   var renderPin = function (offerItem, i) {
     var pinElement = pinTemplate.cloneNode(true);
 
@@ -30,7 +42,11 @@
     return pinElement;
   };
 
-  // Размещение объявлений
+  /**
+   * Размещение объявлений
+   * @param {array} items - массив объявлений
+   * @return {HTMLElement} - фрагмент документа с HTML-элементами меток для добавления
+   */
   var placePins = function (items) {
     var pinsCount = items.length > PINS_QUANTITY ? PINS_QUANTITY : items.length;
     var fragment = document.createDocumentFragment();
@@ -40,12 +56,18 @@
     return fragment;
   };
 
+  /**
+   * Удаление меток с карты
+   */
   var removePins = function () {
     document.querySelectorAll('button[offer-id]').forEach(function (pinItem) {
       pinItem.remove();
     });
   };
 
+  /**
+   * Обновление меток на карте
+   */
   var updatePins = window.utils.debounce(function () {
     window.map.map.insertBefore(window.pins.placePins(window.filters.filteringOffers(window.data.offers)), window.map.mapFiltersContainer);
   });

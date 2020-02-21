@@ -2,8 +2,14 @@
 
 (function () {
 
+  /**
+   * Массив объявлений
+   */
   var offers = [];
 
+  /**
+   * Параметры жилья
+   */
   var housingData = {
     palace: {
       type: 'Дворец',

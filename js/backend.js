@@ -3,18 +3,21 @@
 (function () {
 
   /**
-   *
-   */
+   * Значение ожидания ответа сервера
+  */
   var TIMEOUT = 10000;
 
 
+  /**
+   * Адреса, по которым выполняются запросы
+   */
   var RequestUrl = {
     URL_GET: 'https://js.dump.academy/keksobooking/data',
     URL_POST: 'https://js.dump.academy/keksobooking'
   };
 
   /**
-   *
+   * Коды ответов сервера
    */
   var RequestStatusCode = {
     OK: 200,
@@ -24,7 +27,7 @@
   };
 
   /**
-   *
+   * Типов запросов
    */
   var RequestType = {
     POST: 'POST',
@@ -32,10 +35,10 @@
   };
 
   /**
-   *
-   * @param {*} xhr
-   * @param {*} successHandler
-   * @param {*} errorHandler
+   * Проверка полученного кода ответа на запрос
+   * @param {XMLHttpRequest} xhr - XMLHttpRequest-объект
+   * @param {function} successHandler - помощник, обрабатывающий успешный ответ сервера
+   * @param {function} errorHandler - помощник, обрабатывающий все остальные ответы сервера
    */
   var checkStatusXhr = function (xhr, successHandler, errorHandler) {
     switch (xhr.status) {
@@ -43,7 +46,7 @@
         successHandler(xhr.response);
         break;
       case (RequestStatusCode.BAD_REQUEST):
-        errorHandler('Введенные данные не соответстуют требованиям');
+        errorHandler('Введенные данные не соответствуют требованиям');
         break;
       case (RequestStatusCode.NOT_FOUND):
         errorHandler('Сервер недоступен. Мы работаем, чтобы скорее все починить!');
@@ -57,15 +60,16 @@
   };
 
   /**
-   *
-   * @param {string} requestType
-   * @param {string} requestUrl
-   * @param {*} successHandler
-   * @param {*} errorHandler
-   * @param {*} requestData
+   * Выполнение запроса и обработка сопутствующих событий
+   * @param {string} requestType - тип запроса
+   * @param {string} requestUrl - адрес, по которому выполняется запрос
+   * @param {requestCallback} successHandler - помощник, обрабатывающий успешный ответ сервера
+   * @param {requestCallback} errorHandler - помощник, обрабатывающий все остальные ответы сервера
+   * @param {Object} requestData - необязательный параметр, указывается для post-запросов
    */
   var serverRequest = function (requestType, requestUrl, successHandler, errorHandler, requestData) {
     var xhr = new XMLHttpRequest();
+
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {

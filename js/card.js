@@ -2,13 +2,18 @@
 
 (function () {
 
-  // Получение шаблона карточки
+  /**
+   * Шаблон карточки объявления
+   */
   var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 
-  // Добавление преимуществ
+  /**
+   * Добавление удобств
+   * @param {HTMLElement} element - элемент, к которому добавляются удобства
+   * @param {array} features - массив удобств объекта объявления
+   */
   var renderFeatures = function (element, features) {
     element.innerHTML = '';
-
     features.forEach(function (feature) {
       var featureItem = document.createElement('li');
       featureItem.classList.add('popup__feature');
@@ -17,7 +22,11 @@
     });
   };
 
-  // Добавление фото
+  /**
+   * Добавление фотографий
+   * @param {HTMLElement} element - элемент, к которому добавляются фотографии
+   * @param {array} photos - массив фотографий объекта объявления
+   */
   var renderPhotos = function (element, photos) {
     var photoItemTemplate = element.querySelector('img');
     element.innerHTML = '';
@@ -28,7 +37,11 @@
     });
   };
 
-  // Выбор строки для комнаты
+  /**
+   * Выбор строки для комнаты
+   * @param {number} rooms - количество комнат
+   * @return {srting} строка для подстановки в форму карточки объявления
+   */
   var switchRooms = function (rooms) {
     var str = '';
     switch (rooms) {
@@ -47,7 +60,11 @@
     return str;
   };
 
-  // Выбор строки для гостей
+  /**
+   * Выбор строки для гостей
+   * @param {number} guests
+   * @return {string} строка для подстановки в форму карточки объявления
+   */
   var switchGuest = function (guests) {
     var str = '';
     switch (guests) {
@@ -62,11 +79,11 @@
     return str;
   };
 
-  var closeBtnCardClickHandler = function () {
-    closeCard();
-  };
-
-  // Отрисовка карточки объявления
+  /**
+   * Отрисовка карточки объявления
+   * @param {Object} offerItem
+   * @return {HTMLElement} карточка объявления для расположения на карте
+   */
   var renderCard = function (offerItem) {
     var cardElement = cardTemplate.cloneNode(true);
     var cardFeatures = cardElement.querySelector('.popup__features');
@@ -89,13 +106,25 @@
     return cardElement;
   };
 
-  // Открытие карточки объявления
+  /**
+   * Помощник, выполняющий закрытие карточки объявления
+   */
+  var closeBtnCardClickHandler = function () {
+    closeCard();
+  };
+
+  /**
+   * Открытие карточки объявления
+   * @param {Object} offer - объявление
+   */
   var openCard = function (offer) {
     closeCard();
     window.map.map.insertBefore(document.createDocumentFragment().appendChild(renderCard(offer)), window.map.mapFiltersContainer);
   };
 
-  // Закрытие карточки объявления
+  /**
+   * Закрытие карточки объявления
+   */
   var closeCard = function () {
     var card = window.map.map.querySelector('.popup');
     if (card) {
