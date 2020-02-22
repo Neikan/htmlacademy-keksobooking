@@ -157,7 +157,7 @@
    * Помощник, отслеживавающий клавиатурные нажатия на фотографии объекта
    * @param {event} evt
    */
-  var adFormPhotosKeyDownkHandler = function (evt) {
+  var adFormPhotosKeyDownHandler = function (evt) {
     if (evt.keyCode === window.utils.KeyCode.ENTER) {
       if (adFormPhotosPreview.children.length === 0) {
         adFormPhotosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
@@ -198,7 +198,7 @@
     adFormAvatarChangeHandler: adFormAvatarChangeHandler,
     adFormPhotosChangeHandler: adFormPhotosChangeHandler,
     adFormPhotosClickHandler: adFormPhotosClickHandler,
-    adFormPhotosKeyDownkHandler: adFormPhotosKeyDownkHandler
+    adFormPhotosKeyDownHandler: adFormPhotosKeyDownHandler
   };
 
 })();

@@ -143,7 +143,7 @@
     window.form.adFormPhotosPreview.removeEventListener('click', window.form.adFormPhotosClickHandler);
     window.form.adFormPhotosPreview.removeEventListener('keydown', window.form.adFormPhotosKeyDownHandler);
     window.form.adForm.removeEventListener('change', window.form.adFormChangeHandler);
-    window.form.adFormButtonUpload.addEventListener('click', uploadButtonClickHandler);
+    window.form.adFormButtonUpload.removeEventListener('click', uploadButtonClickHandler);
     window.form.adFormButtonClear.removeEventListener('click', clearButtonClickhandler);
     window.filters.mapFiltersForm.removeEventListener('change', window.filters.mapFiltersFormChangeHandler);
   };

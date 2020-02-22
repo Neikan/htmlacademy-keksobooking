@@ -101,6 +101,11 @@
           newPreviewItem.addEventListener('click', function () {
             newPreviewItem.remove();
           });
+          newPreviewItem.addEventListener('keydown', function (evt) {
+            if (evt.keyCode === window.utils.KeyCode.ENTER) {
+              newPreviewItem.remove();
+            }
+          });
         }
       });
       reader.readAsDataURL(file);

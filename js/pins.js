@@ -20,9 +20,8 @@
    */
   var pinClickHandler = function (evt) {
     var targetPin = evt.target.closest('button[offer-id]');
-    // window.utils.removeClassForElements(document.querySelectorAll('button[offer-id]'), window.utils.ClassForManipulation.PIN_ACTIVE);
-    targetPin.classList.add(window.utils.ClassForManipulation.PIN_ACTIVE);
     window.card.openCard(window.filters.filteringOffers(window.data.offers)[targetPin.getAttribute('offer-id')]);
+    targetPin.classList.add(window.utils.ClassForManipulation.PIN_ACTIVE);
   };
 
   /**
