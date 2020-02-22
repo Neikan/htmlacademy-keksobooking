@@ -21,11 +21,17 @@
   };
 
   /**
-   * Перечень сss-классов
+   * Перечень сss-классов для работы с элементами
    * @enum {string} */
-  var ClassForPreviewPhoto = {
-    CONTAINER: 'offer__photo__preview__container',
-    IMG: 'offer__photo__preview__img'
+  var ClassForManipulation = {
+    MAP_FADED: 'map--faded',
+    ADFORM_DISABLED: 'ad-form--disabled',
+    POPUP_FEATURE: 'popup__feature',
+    PIN_ACTIVE: 'map__pin--active',
+    PHOTO_IMAGE_CONTAINER: 'offer__photo__preview__container',
+    PHOTO_IMAGE: 'offer__photo__preview__img',
+    CURSOR_POINTER: 'adform__cursor__pointer',
+    CURSOR_DEFAULT: 'adform__cursor__default'
   };
 
   /**
@@ -48,13 +54,25 @@
     }
   };
 
+  var addClassForElements = function (elements, className) {
+    elements.forEach(function (element) {
+      element.classList.add(className);
+    });
+  };
+
+  var removeClassForElements = function (elements, className) {
+    elements.forEach(function (element) {
+      element.classList.remove(className);
+    });
+  };
+
   /**
    * Создание html-элемента с тегом 'img'
    * @return {HTMLElement}
    */
   var createImageElement = function () {
     var item = document.createElement('img');
-    item.classList.add(ClassForPreviewPhoto.IMG);
+    item.classList.add(ClassForManipulation.PHOTO_IMAGE);
     item.setAttribute('tabindex', 0);
     return item;
   };
@@ -113,9 +131,11 @@
 
   window.utils = {
     KeyCode: KeyCode,
-    ClassForPreviewPhoto: ClassForPreviewPhoto,
+    ClassForManipulation: ClassForManipulation,
     enableElements: enableElements,
     disableElements: disableElements,
+    addClassForElements: addClassForElements,
+    removeClassForElements: removeClassForElements,
     createImageElement: createImageElement,
     displayPreviewImage: displayPreviewImage,
     debounce: debounce

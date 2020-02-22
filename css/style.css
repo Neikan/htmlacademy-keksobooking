@@ -1265,10 +1265,23 @@ fieldset {
   height: 70px;
   border-radius: 5px;
   background-color: #dadada;
+  cursor: pointer;
 }
 
 .offer__photo__preview__img:hover,
 .offer__photo__preview__img:focus {
   border: 1px solid #ff6547;
   outline: none;
+}
+
+.offer__photo__preview__img:active {
+  background-color: #ff6547;
+}
+
+.adform__cursor__pointer {
+  cursor: pointer;
+}
+
+.adform__cursor__default {
+  cursor: default;
 }

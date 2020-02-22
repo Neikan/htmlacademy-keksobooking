@@ -13,7 +13,8 @@
    * Формы объявления и ее поля
    */
   var adForm = document.querySelector('.ad-form');
-  var adFormFieldsets = adForm.querySelectorAll('input, select, fieldset');
+  var adFormFieldsets = adForm.querySelectorAll('input, select, button, label, fieldset');
+  var adFormSelects = adForm.querySelectorAll('select');
   var adFormAvatarUpload = adForm.querySelector('#avatar');
   var adFormAvatarPreview = adForm.querySelector('[class="ad-form-header__preview"] img');
   var adFormAvatarPreviewSrc = adFormAvatarPreview.src;
@@ -120,7 +121,7 @@
   };
 
   /**
-   * Помощние, вызывающий валидацию формы
+   * Помощник, вызывающий валидацию данных формы
    * @param {event} evt
    */
   var adFormChangeHandler = function (evt) {
@@ -140,7 +141,7 @@
    */
   var adFormPhotosChangeHandler = function () {
     window.utils.displayPreviewImage(adFormPhotosUpload, adFormPhotosPreview, true, window.utils.createImageElement());
-    adFormPhotosPreview.classList.add(window.utils.ClassForPreviewPhoto.CONTAINER);
+    adFormPhotosPreview.classList.add(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
   };
 
   /**
@@ -148,7 +149,7 @@
    */
   var adFormPhotosClickHandler = function () {
     if (adFormPhotosPreview.children.length === 0) {
-      adFormPhotosPreview.classList.remove(window.utils.ClassForPreviewPhoto.CONTAINER);
+      adFormPhotosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
     }
   };
 
@@ -159,7 +160,7 @@
   var adFormPhotosKeyDownkHandler = function (evt) {
     if (evt.keyCode === window.utils.KeyCode.ENTER) {
       if (adFormPhotosPreview.children.length === 0) {
-        adFormPhotosPreview.classList.remove(window.utils.ClassForPreviewPhoto.CONTAINER);
+        adFormPhotosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
       }
     }
   };
@@ -171,12 +172,13 @@
     adFormAvatarPreview.src = adFormAvatarPreviewSrc;
 
     adFormPhotosPreview.innerHTML = '';
-    adFormPhotosPreview.classList.remove(window.utils.ClassForPreviewPhoto.CONTAINER);
+    adFormPhotosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
   };
 
   window.form = {
     adForm: adForm,
     adFormFieldsets: adFormFieldsets,
+    adFormSelects: adFormSelects,
     adFormAddress: adFormAddress,
     adFormAvatarUpload: adFormAvatarUpload,
     adFormPhotosUpload: adFormPhotosUpload,

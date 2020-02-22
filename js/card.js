@@ -16,8 +16,8 @@
     element.innerHTML = '';
     features.forEach(function (feature) {
       var featureItem = document.createElement('li');
-      featureItem.classList.add('popup__feature');
-      featureItem.classList.add('popup__feature--' + feature);
+      featureItem.classList.add(window.utils.ClassForManipulation.POPUP_FEATURE);
+      featureItem.classList.add(window.utils.ClassForManipulation.POPUP_FEATURE + '--' + feature);
       element.appendChild(featureItem);
     });
   };
@@ -130,6 +130,7 @@
     if (card) {
       card.remove();
       window.map.map.removeEventListener('click', closeBtnCardClickHandler);
+      window.map.map.querySelector('.' + window.utils.ClassForManipulation.PIN_ACTIVE).classList.remove(window.utils.ClassForManipulation.PIN_ACTIVE);
     }
   };
 

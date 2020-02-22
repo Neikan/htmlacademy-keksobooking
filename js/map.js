@@ -46,11 +46,13 @@
     window.data.offers = responseItems;
     map.insertBefore(window.pins.placePins(window.data.offers), mapFiltersContainer);
 
-    map.classList.remove('map--faded');
-    window.form.adForm.classList.remove('ad-form--disabled');
-    window.form.adFormAddress.classList.add('ad-form--disabled');
+    map.classList.remove(window.utils.ClassForManipulation.MAP_FADED);
+    window.form.adForm.classList.remove(window.utils.ClassForManipulation.ADFORM_DISABLED);
+    window.form.adFormAddress.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
     window.utils.enableElements(window.filters.mapFiltersForm);
     window.utils.enableElements(window.form.adFormFieldsets);
+    window.utils.addClassForElements(window.form.adFormSelects, window.utils.ClassForManipulation.CURSOR_POINTER);
+    window.utils.removeClassForElements(window.form.adFormFieldsets, window.utils.ClassForManipulation.CURSOR_DEFAULT);
 
     window.form.setRequirementsTitle();
     window.form.setRequirementsPrice();
@@ -119,10 +121,12 @@
   var disablePage = function () {
     window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
     window.locality.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
-    map.classList.add('map--faded');
-    window.form.adForm.classList.add('ad-form--disabled');
+    map.classList.add(window.utils.ClassForManipulation.MAP_FADED);
+    window.form.adForm.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
     window.utils.disableElements(window.filters.mapFiltersForm);
     window.utils.disableElements(window.form.adFormFieldsets);
+    window.utils.removeClassForElements(window.form.adFormSelects, window.utils.ClassForManipulation.CURSOR_POINTER);
+    window.utils.addClassForElements(window.form.adFormFieldsets, window.utils.ClassForManipulation.CURSOR_DEFAULT);
 
     window.pins.removePins();
     window.filters.mapFiltersForm.reset();
@@ -139,7 +143,7 @@
     window.form.adFormPhotosPreview.removeEventListener('click', window.form.adFormPhotosClickHandler);
     window.form.adFormPhotosPreview.removeEventListener('keydown', window.form.adFormPhotosKeyDownHandler);
     window.form.adForm.removeEventListener('change', window.form.adFormChangeHandler);
-    window.form.adFormButtonUpload.removeEventListener('submit', uploadButtonClickHandler);
+    window.form.adFormButtonUpload.addEventListener('click', uploadButtonClickHandler);
     window.form.adFormButtonClear.removeEventListener('click', clearButtonClickhandler);
     window.filters.mapFiltersForm.removeEventListener('change', window.filters.mapFiltersFormChangeHandler);
   };
@@ -162,7 +166,7 @@
     window.form.adFormPhotosPreview.addEventListener('click', window.form.adFormPhotosClickHandler);
     window.form.adFormPhotosPreview.addEventListener('keydown', window.form.adFormPhotosKeyDownHandler);
     window.form.adForm.addEventListener('change', window.form.adFormChangeHandler);
-    window.form.adFormButtonUpload.addEventListener('submit', uploadButtonClickHandler);
+    window.form.adFormButtonUpload.addEventListener('click', uploadButtonClickHandler);
     window.form.adFormButtonClear.addEventListener('click', clearButtonClickhandler);
     window.filters.mapFiltersForm.addEventListener('change', window.filters.mapFiltersFormChangeHandler);
   };
