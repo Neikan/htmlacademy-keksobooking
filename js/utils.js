@@ -54,12 +54,22 @@
     }
   };
 
+  /**
+   * Добавление css-класса для массива элементов
+   * @param {array} elements
+   * @param {string} className
+   */
   var addClassForElements = function (elements, className) {
     elements.forEach(function (element) {
       element.classList.add(className);
     });
   };
 
+  /**
+   * Удаление css-класса для массива элементов
+   * @param {array} elements
+   * @param {string} className
+   */
   var removeClassForElements = function (elements, className) {
     elements.forEach(function (element) {
       element.classList.remove(className);

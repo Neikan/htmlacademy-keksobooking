@@ -28,7 +28,6 @@
   var adFormTimeOut = adForm.querySelector('#timeout');
   var adFormPhotosUpload = adForm.querySelector('#images');
   var adFormPhotosPreview = adForm.querySelector('.ad-form__photo');
-  var adFormButtonUpload = adForm.querySelector('.ad-form__submit');
   var adFormButtonClear = adForm.querySelector('.ad-form__reset');
 
   /**
@@ -183,7 +182,6 @@
     adFormAvatarUpload: adFormAvatarUpload,
     adFormPhotosUpload: adFormPhotosUpload,
     adFormPhotosPreview: adFormPhotosPreview,
-    adFormButtonUpload: adFormButtonUpload,
     adFormButtonClear: adFormButtonClear,
 
     setRequirementsTitle: setRequirementsTitle,

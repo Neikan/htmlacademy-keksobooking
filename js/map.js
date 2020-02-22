@@ -104,7 +104,7 @@
    * Помощник, выполняющий отправку данных формы на сервер
    * @param {event} evt
    */
-  var uploadButtonClickHandler = function (evt) {
+  var adFormSubmitHandler = function (evt) {
     evt.preventDefault();
     window.backend.serverRequest(window.backend.RequestType.POST, window.backend.RequestUrl.URL_POST, uploadOfferDataHandler, errorUploadOfferDataHandler, new FormData(window.form.adForm));
   };
@@ -121,6 +121,9 @@
   var disablePage = function () {
     window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
     window.locality.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
+    window.locality.setMainPinDefaultCoordinate();
+    window.locality.getAddress(false);
+
     map.classList.add(window.utils.ClassForManipulation.MAP_FADED);
     window.form.adForm.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
     window.utils.disableElements(window.filters.mapFiltersForm);
@@ -134,16 +137,13 @@
     window.form.resetAdFormPhotosAndAvatar();
     window.form.setRequirementsPrice();
 
-    window.locality.setMainPinDefaultCoordinate();
-    window.locality.getAddress(false);
-
     document.removeEventListener('keydown', documentKeyDownHandler);
+    window.form.adForm.removeEventListener('change', window.form.adFormChangeHandler);
+    window.form.adForm.removeEventListener('submit', adFormSubmitHandler);
     window.form.adFormAvatarUpload.removeEventListener('change', window.form.adFormAvatarChangeHandler);
     window.form.adFormPhotosUpload.removeEventListener('change', window.form.adFormPhotosChangeHandler);
     window.form.adFormPhotosPreview.removeEventListener('click', window.form.adFormPhotosClickHandler);
     window.form.adFormPhotosPreview.removeEventListener('keydown', window.form.adFormPhotosKeyDownHandler);
-    window.form.adForm.removeEventListener('change', window.form.adFormChangeHandler);
-    window.form.adFormButtonUpload.removeEventListener('click', uploadButtonClickHandler);
     window.form.adFormButtonClear.removeEventListener('click', clearButtonClickhandler);
     window.filters.mapFiltersForm.removeEventListener('change', window.filters.mapFiltersFormChangeHandler);
   };
@@ -156,17 +156,17 @@
   var enablePage = function () {
     window.locality.mainPin.removeEventListener('mousedown', mainPinMouseDownHandler);
     window.locality.mainPin.removeEventListener('keydown', mainPinKeyDownHandler);
-    window.backend.serverRequest(window.backend.RequestType.GET, window.backend.RequestUrl.URL_GET, showLoadedOffersHandler, errorLoadOffersHandler);
-
     window.locality.getAddress(true);
 
+    window.backend.serverRequest(window.backend.RequestType.GET, window.backend.RequestUrl.URL_GET, showLoadedOffersHandler, errorLoadOffersHandler);
+
     document.addEventListener('keydown', documentKeyDownHandler);
+    window.form.adForm.addEventListener('change', window.form.adFormChangeHandler);
+    window.form.adForm.addEventListener('submit', adFormSubmitHandler);
     window.form.adFormAvatarUpload.addEventListener('change', window.form.adFormAvatarChangeHandler);
     window.form.adFormPhotosUpload.addEventListener('change', window.form.adFormPhotosChangeHandler);
     window.form.adFormPhotosPreview.addEventListener('click', window.form.adFormPhotosClickHandler);
     window.form.adFormPhotosPreview.addEventListener('keydown', window.form.adFormPhotosKeyDownHandler);
-    window.form.adForm.addEventListener('change', window.form.adFormChangeHandler);
-    window.form.adFormButtonUpload.addEventListener('click', uploadButtonClickHandler);
     window.form.adFormButtonClear.addEventListener('click', clearButtonClickhandler);
     window.filters.mapFiltersForm.addEventListener('change', window.filters.mapFiltersFormChangeHandler);
   };
