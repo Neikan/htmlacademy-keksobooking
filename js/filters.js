@@ -93,7 +93,7 @@
       return getFiltersData().every(function (element) {
         return (element.filterValue === defaultFilterValue) ? true : filtersRules[element.filterName](item, element.filterValue);
       });
-    }).slice(0, window.pins.PINS_QUANTITY);
+    }).slice(0, window.pins.PinParameter.PINS_QUANTITY);
   };
 
   /**

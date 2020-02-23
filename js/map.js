@@ -122,8 +122,6 @@
     window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
     window.locality.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
     window.locality.setMainPinDefaultCoordinate();
-    window.locality.getAddress(false);
-
     map.classList.add(window.utils.ClassForManipulation.MAP_FADED);
     window.form.adForm.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
     window.utils.disableElements(window.filters.mapFiltersForm);
@@ -136,6 +134,7 @@
     window.form.adForm.reset();
     window.form.resetAdFormPhotosAndAvatar();
     window.form.setRequirementsPrice();
+    window.locality.getAddress(false);
 
     document.removeEventListener('keydown', documentKeyDownHandler);
     window.form.adForm.removeEventListener('change', window.form.adFormChangeHandler);

@@ -31,7 +31,8 @@
     PHOTO_IMAGE_CONTAINER: 'offer__photo__preview__container',
     PHOTO_IMAGE: 'offer__photo__preview__img',
     CURSOR_POINTER: 'adform__cursor__pointer',
-    CURSOR_DEFAULT: 'adform__cursor__default'
+    CURSOR_DEFAULT: 'adform__cursor__default',
+    HIDDEN: 'visually-hidden'
   };
 
   /**
@@ -144,6 +145,17 @@
     };
   };
 
+  /**
+   * Определение склонения существительного по числу
+   * @param {number} number
+   * @param {array} titles
+   * @return {string} строку для подстановки
+   */
+  var getDeclensionOfNoun = function (number, titles) {
+    var cases = [2, 0, 1, 1, 1, 2];
+    return titles [(number % 100 > 4 && number % 100 < 20) ? 2 : cases[(number % 10 < 5) ? number % 10 : 5]];
+  };
+
   window.utils = {
     KeyCode: KeyCode,
     ClassForManipulation: ClassForManipulation,
@@ -153,7 +165,8 @@
     removeClassForElements: removeClassForElements,
     createImageElement: createImageElement,
     displayPreviewImage: displayPreviewImage,
-    debounce: debounce
+    debounce: debounce,
+    getDeclensionOfNoun: getDeclensionOfNoun
   };
 
 })();
