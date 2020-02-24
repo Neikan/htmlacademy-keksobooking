@@ -30,9 +30,14 @@
     PIN_ACTIVE: 'map__pin--active',
     PHOTO_IMAGE_CONTAINER: 'offer__photo__preview__container',
     PHOTO_IMAGE: 'offer__photo__preview__img',
+    AVATAR_IMAGE: 'offer__avatar__preview__img',
     CURSOR_POINTER: 'adform__cursor__pointer',
     CURSOR_DEFAULT: 'adform__cursor__default',
-    HIDDEN: 'visually-hidden'
+    HIDDEN: 'visually-hidden',
+    MISMATCH_FILE: 'mismatch__file',
+    MISMATCH_FILE_MESSAGE: 'mismatch__file__message',
+    MAP_CARD_PHOTO: 'map__card__photo',
+    BUTTON_CLOSE: 'popup__close'
   };
 
   /**
@@ -101,6 +106,10 @@
     var matches = FILE_TYPES.some(function (it) {
       return fileName.endsWith(it);
     });
+    if (!matches) {
+      window.messages.displayMismatchFileMessageHandler();
+      window.messages.displayOffMessageHandler();
+    }
     if (matches) {
       var reader = new FileReader();
       reader.addEventListener('load', function () {
@@ -120,8 +129,8 @@
         }
       });
       reader.readAsDataURL(file);
-      uploadField.value = '';
     }
+    uploadField.value = '';
   };
 
   /**

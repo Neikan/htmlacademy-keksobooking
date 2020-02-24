@@ -502,6 +502,7 @@ fieldset {
 
 .ad-form--disabled {
   opacity: 0.3;
+  cursor: default;
 }
 
 .ad-form-header {
@@ -626,6 +627,13 @@ fieldset {
   outline: none;
   -webkit-box-shadow: 0 0 2px 2px #ff6547;
           box-shadow: 0 0 2px 2px #ff6547;
+}
+
+.ad-form__element input[readonly]:hover,
+.ad-form__element input[readonly]:focus,
+.ad-form__element input[readonly]:active {
+  border-color: #d9d9d3;
+  box-shadow: none;
 }
 
 .ad-form__element--time {
@@ -1166,6 +1174,7 @@ fieldset {
  * Сообщения об успешном и неуспешном создании объявления
  */
 
+.mismatch__file,
 .success,
 .error {
   position: fixed;
@@ -1188,6 +1197,7 @@ fieldset {
   background-color: rgba(0, 0, 0, 0.8);
 }
 
+.mismatch__file__message,
 .success__message,
 .error__message {
   position: relative;
@@ -1197,6 +1207,7 @@ fieldset {
   font-weight: 700;
 }
 
+.mismatch__file__message::before,
 .success__message::before,
 .error__message::before {
   content: "";
@@ -1278,10 +1289,40 @@ fieldset {
   background-color: #ff6547;
 }
 
+.offer__avatar__preview__img {
+  cursor: pointer;
+}
+
+.offer__avatar__preview__img:hover,
+.offer__avatar__preview__img:focus {
+  border: 1px solid #ff6547;
+  outline: none;
+}
+
+.offer__avatar__preview__img:active {
+  background-color: #ff6547;
+}
+
 .adform__cursor__pointer {
   cursor: pointer;
 }
 
 .adform__cursor__default {
   cursor: default;
+}
+
+
+.map__card__photo {
+  position: absolute;
+  z-index: 2;
+  top: 0px;
+  left: 260px;
+
+  padding: 10px;
+  margin: auto;
+
+  font-size: 12px;
+
+  border-radius: 5px;
+  background-color: #ffffff;
 }

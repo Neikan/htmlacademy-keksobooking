@@ -32,6 +32,21 @@
   };
 
   /**
+   * Помощник, обеспечивающий отображение сообщения о несоответствии расширения файла разрешенным типам
+   */
+  var displayMismatchFileMessageHandler = function () {
+    var message = document.createElement('div');
+    var messageText = document.createElement('p');
+    message.appendChild(messageText);
+    messageText.textContent = 'Выбран неподдерживаемый формат файла';
+    message.setAttribute('name', 'message');
+    message.style = 'z-index: 3';
+    message.classList.add(window.utils.ClassForManipulation.MISMATCH_FILE);
+    messageText.classList.add(window.utils.ClassForManipulation.MISMATCH_FILE_MESSAGE);
+    document.querySelector('main').insertAdjacentElement('afterbegin', message);
+  };
+
+  /**
    * Помощник, выполняющий закрытие сообщения
    */
   var displayOffMessageHandler = function () {
@@ -62,6 +77,7 @@
   window.messages = {
     displayErrorMessageHandler: displayErrorMessageHandler,
     displaySuccessMessageHandler: displaySuccessMessageHandler,
+    displayMismatchFileMessageHandler: displayMismatchFileMessageHandler,
     displayOffMessageHandler: displayOffMessageHandler
   };
 

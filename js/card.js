@@ -33,6 +33,8 @@
     photos.forEach(function (photo) {
       var photoItem = photoItemTemplate.cloneNode(true);
       photoItem.src = photo;
+      photoItem.classList.add(window.utils.ClassForManipulation.CURSOR_POINTER);
+      photoItem.addEventListener('click', window.cardPhoto.photoItemClickHandler);
       element.appendChild(photoItem);
     });
   };
@@ -195,6 +197,7 @@
   var closeCard = function () {
     var card = window.map.map.querySelector('.popup');
     if (card) {
+      window.cardPhoto.closePhotoDisplay();
       card.remove();
       window.map.map.removeEventListener('click', closeBtnCardClickHandler);
       window.map.map.querySelector('.' + window.utils.ClassForManipulation.PIN_ACTIVE).classList.remove(window.utils.ClassForManipulation.PIN_ACTIVE);

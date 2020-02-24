@@ -16,6 +16,7 @@
   var adFormFieldsets = adForm.querySelectorAll('input, select, button, label, fieldset');
   var adFormSelects = adForm.querySelectorAll('select');
   var adFormAvatarUpload = adForm.querySelector('#avatar');
+  var adFormAvatarPreviewHeader = adForm.querySelector('.ad-form-header__preview');
   var adFormAvatarPreview = adForm.querySelector('[class="ad-form-header__preview"] img');
   var adFormAvatarPreviewSrc = adFormAvatarPreview.src;
   var adFormTitle = adForm.querySelector('#title');
@@ -53,8 +54,8 @@
    * Установка параметров по типам файлов для полей аватара автора и фотографий объекта объявления
    */
   var setRequirementsImages = function () {
-    adFormAvatarUpload.setAttribute('accept', 'image/png, image/jpeg, image/gif');
-    adFormPhotosUpload.setAttribute('accept', 'image/png, image/jpeg, image/gif');
+    adFormAvatarUpload.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
+    adFormPhotosUpload.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
   };
 
   /**
@@ -62,7 +63,7 @@
    */
   var setRequirementsAddress = function () {
     adFormAddress.setAttribute('readonly', true);
-    adFormAddress.classList.add('ad-form--disabled');
+    adFormAddress.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
   };
 
   /**
@@ -133,6 +134,7 @@
    */
   var adFormAvatarChangeHandler = function () {
     window.utils.displayPreviewImage(adFormAvatarUpload, adFormAvatarPreview, false);
+    adFormAvatarPreviewHeader.classList.add(window.utils.ClassForManipulation.AVATAR_IMAGE);
   };
 
   /**
@@ -174,11 +176,22 @@
     adFormPhotosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
   };
 
+
+  adFormAvatarPreview.addEventListener('click', function () {
+    adFormAvatarPreview.src = adFormAvatarPreviewSrc;
+  });
+  adFormAvatarPreview.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.utils.KeyCode.ENTER) {
+      adFormAvatarPreview.src = adFormAvatarPreviewSrc;
+    }
+  });
+
   window.form = {
     adForm: adForm,
     adFormFieldsets: adFormFieldsets,
     adFormSelects: adFormSelects,
     adFormAddress: adFormAddress,
+    adFormAvatarPreviewSrc: adFormAvatarPreviewSrc,
     adFormAvatarUpload: adFormAvatarUpload,
     adFormPhotosUpload: adFormPhotosUpload,
     adFormPhotosPreview: adFormPhotosPreview,
