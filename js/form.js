@@ -128,13 +128,32 @@
     window.form.validationForm(evt);
   };
 
-
   /**
    * Помощник, отслеживавающий изменение аватара автора объявления
    */
   var adFormAvatarChangeHandler = function () {
     window.utils.displayPreviewImage(adFormAvatarUpload, adFormAvatarPreview, false);
     adFormAvatarPreviewHeader.classList.add(window.utils.ClassForManipulation.AVATAR_IMAGE);
+    adFormAvatarPreviewHeader.setAttribute('tabindex', 0);
+    adFormAvatarPreviewHeader.addEventListener('click', adFormAvatarPreviewHeaderClickHandler);
+    adFormAvatarPreviewHeader.addEventListener('keydown', adFormAvatarPreviewHeaderkeyDownHandler);
+  };
+
+  /**
+   * Помощник, добавляющий возможность удаления добавленного изображения аватара по клику
+   */
+  var adFormAvatarPreviewHeaderClickHandler = function () {
+    resetAdFormAvatar();
+  };
+
+  /**
+   * Помощник, добавляющий возможность удаления добавленного изображения аватара по нажатию клавишу клавиатуры
+   * @param {event} evt
+   */
+  var adFormAvatarPreviewHeaderkeyDownHandler = function (evt) {
+    if (evt.keyCode === window.utils.KeyCode.ENTER) {
+      resetAdFormAvatar();
+    }
   };
 
   /**
@@ -167,24 +186,24 @@
   };
 
   /**
+   * Возврат блока аватара автора к значениям по умолчанию
+   */
+  var resetAdFormAvatar = function () {
+    adFormAvatarPreview.src = adFormAvatarPreviewSrc;
+    adFormAvatarPreviewHeader.classList.remove(window.utils.ClassForManipulation.AVATAR_IMAGE);
+    adFormAvatarPreviewHeader.removeAttribute('tabindex');
+    adFormAvatarPreviewHeader.removeEventListener('click', adFormAvatarPreviewHeaderClickHandler);
+    adFormAvatarPreviewHeader.removeEventListener('keydown', adFormAvatarPreviewHeaderkeyDownHandler);
+  };
+
+  /**
    * Возврат блоков аватара автора и фотографий объекта к значениям по умолчанию
    */
   var resetAdFormPhotosAndAvatar = function () {
-    adFormAvatarPreview.src = adFormAvatarPreviewSrc;
-
+    resetAdFormAvatar();
     adFormPhotosPreview.innerHTML = '';
     adFormPhotosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
   };
-
-
-  adFormAvatarPreview.addEventListener('click', function () {
-    adFormAvatarPreview.src = adFormAvatarPreviewSrc;
-  });
-  adFormAvatarPreview.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === window.utils.KeyCode.ENTER) {
-      adFormAvatarPreview.src = adFormAvatarPreviewSrc;
-    }
-  });
 
   window.form = {
     adForm: adForm,

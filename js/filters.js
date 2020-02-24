@@ -90,7 +90,7 @@
    */
   var filteringOffers = function (offers) {
     return offers.filter(function (item) {
-      return getFiltersData().every(function (element) {
+      return item.offer && getFiltersData().every(function (element) {
         return (element.filterValue === defaultFilterValue) ? true : filtersRules[element.filterName](item, element.filterValue);
       });
     }).slice(0, window.pins.PinParameter.PINS_QUANTITY);

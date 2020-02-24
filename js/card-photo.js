@@ -4,21 +4,21 @@
 
   /**
    * Создание окна для отображения изображения объявления
-   * @param {string} src - адрес изображения, которое будет отображено
+   * @param {string} imageSrc - адрес изображения, которое будет отображено
    * @return {HTMLElement} - элемент для отображения на странице
    */
-  var createPhotoDisplay = function (src) {
+  var createPhotoDisplay = function (imageSrc) {
     var container = document.createElement('div');
 
-    var itemImg = document.createElement('img');
-    itemImg.src = src;
+    var itemImage = document.createElement('img');
+    itemImage.src = imageSrc;
 
     var itemButton = document.createElement('button');
     itemButton.setAttribute('type', 'button');
     itemButton.classList.add(window.utils.ClassForManipulation.BUTTON_CLOSE);
 
     container.classList.add(window.utils.ClassForManipulation.MAP_CARD_PHOTO);
-    container.appendChild(itemImg);
+    container.appendChild(itemImage);
     container.appendChild(itemButton);
 
     return container;
@@ -41,7 +41,6 @@
     closePhotoDisplay();
     document.querySelector('.popup').appendChild(createPhotoDisplay(evt.target.src));
     document.querySelector('.' + window.utils.ClassForManipulation.MAP_CARD_PHOTO).querySelector('.' + window.utils.ClassForManipulation.BUTTON_CLOSE).addEventListener('click', buttonClosePhotoItemClickHandler);
-    document.querySelector('.popup').addEventListener('keydown', buttonClosePhotoItemKeyDownkHandler);
   };
 
   /**
@@ -49,16 +48,6 @@
    */
   var buttonClosePhotoItemClickHandler = function () {
     closePhotoDisplay();
-  };
-
-  /**
-   * Помощник, обеспечивающий закрытие окна по нажатию клавиши ESC
-   * @param {event} evt
-   */
-  var buttonClosePhotoItemKeyDownkHandler = function (evt) {
-    if (evt.keyCode === window.utils.KeyCode.ESC) {
-      closePhotoDisplay();
-    }
   };
 
   /**

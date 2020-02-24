@@ -104,9 +104,9 @@
 
   /**
    * Проверка значений для отображения данных по вместимости на карточке объявления
-   * @param {*} cardAttribute - элемент карточки, значение которого меняется
-   * @param {*} rooms - количество комнат из объявления
-   * @param {*} guests - количество гостей из объявления
+   * @param {HTMLElement} cardAttribute - элемент карточки, значение которого меняется
+   * @param {number} rooms - количество комнат из объявления
+   * @param {number} guests - количество гостей из объявления
    */
   var checkCapacity = function (cardAttribute, rooms, guests) {
     if (rooms && guests) {
