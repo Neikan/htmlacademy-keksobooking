@@ -2,13 +2,23 @@
 
 (function () {
 
+  /**
+   * Значение ожидания ответа сервера
+  */
   var TIMEOUT = 10000;
 
+
+  /**
+   * Адреса, по которым выполняются запросы
+   */
   var RequestUrl = {
     URL_GET: 'https://js.dump.academy/keksobooking/data',
     URL_POST: 'https://js.dump.academy/keksobooking'
   };
 
+  /**
+   * Коды ответов сервера
+   */
   var RequestStatusCode = {
     OK: 200,
     BAD_REQUEST: 400,
@@ -16,18 +26,27 @@
     SERVER_ERROR: 500
   };
 
+  /**
+   * Типов запросов
+   */
   var RequestType = {
     POST: 'POST',
     GET: 'GET'
   };
 
+  /**
+   * Проверка полученного кода ответа на запрос
+   * @param {XMLHttpRequest} xhr - XMLHttpRequest-объект
+   * @param {function} successHandler - помощник, обрабатывающий успешный ответ сервера
+   * @param {function} errorHandler - помощник, обрабатывающий все остальные ответы сервера
+   */
   var checkStatusXhr = function (xhr, successHandler, errorHandler) {
     switch (xhr.status) {
       case (RequestStatusCode.OK):
         successHandler(xhr.response);
         break;
       case (RequestStatusCode.BAD_REQUEST):
-        errorHandler('Введенные данные не соответстуют требованиям');
+        errorHandler('Введенные данные не соответствуют требованиям');
         break;
       case (RequestStatusCode.NOT_FOUND):
         errorHandler('Сервер недоступен. Мы работаем, чтобы скорее все починить!');
@@ -40,8 +59,17 @@
     }
   };
 
+  /**
+   * Выполнение запроса и обработка сопутствующих событий
+   * @param {string} requestType - тип запроса
+   * @param {string} requestUrl - адрес, по которому выполняется запрос
+   * @param {requestCallback} successHandler - помощник, обрабатывающий успешный ответ сервера
+   * @param {requestCallback} errorHandler - помощник, обрабатывающий все остальные ответы сервера
+   * @param {Object} requestData - необязательный параметр, указывается для post-запросов
+   */
   var serverRequest = function (requestType, requestUrl, successHandler, errorHandler, requestData) {
     var xhr = new XMLHttpRequest();
+
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
