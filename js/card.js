@@ -143,7 +143,7 @@
    * @param {Object} offerItem
    * @return {HTMLElement} карточка объявления для расположения на карте
    */
-  var renderCard = function (offerItem) {
+  var render = function (offerItem) {
     var cardElement = cardTemplate.cloneNode(true);
     var cardFeatures = cardElement.querySelector('.popup__features');
     var cardPhotos = cardElement.querySelector('.popup__photos');
@@ -179,35 +179,35 @@
    * Помощник, выполняющий закрытие карточки объявления
    */
   var closeBtnCardClickHandler = function () {
-    closeCard();
+    close();
   };
 
   /**
    * Открытие карточки объявления
    * @param {Object} offer - объявление
    */
-  var openCard = function (offer) {
-    closeCard();
-    window.map.map.insertBefore(document.createDocumentFragment().appendChild(renderCard(offer)), window.map.mapFiltersContainer);
+  var open = function (offer) {
+    close();
+    window.map.workspace.insertBefore(document.createDocumentFragment().appendChild(render(offer)), window.map.workspaceFilters);
   };
 
   /**
    * Закрытие карточки объявления
    */
-  var closeCard = function () {
-    var card = window.map.map.querySelector('.popup');
+  var close = function () {
+    var card = window.map.workspace.querySelector('.popup');
     if (card) {
       window.cardPhoto.closePhotoDisplay();
       card.remove();
-      window.map.map.removeEventListener('click', closeBtnCardClickHandler);
-      window.map.map.querySelector('.' + window.utils.ClassForManipulation.PIN_ACTIVE).classList.remove(window.utils.ClassForManipulation.PIN_ACTIVE);
+      window.map.workspace.removeEventListener('click', closeBtnCardClickHandler);
+      window.map.workspace.querySelector('.' + window.utils.ClassForManipulation.PIN_ACTIVE).classList.remove(window.utils.ClassForManipulation.PIN_ACTIVE);
     }
   };
 
   window.card = {
-    renderCard: renderCard,
-    openCard: openCard,
-    closeCard: closeCard
+    render: render,
+    open: open,
+    close: close
   };
 
 })();

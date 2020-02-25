@@ -2,7 +2,7 @@
 
 (function () {
 
-  var MAIN_PIN_AFTER_HEIGHT = 17; // 22px - 5px border
+  var MAIN_PIN_AFTER_HEIGHT = 17;
 
   /**
    * Ограничения рабочей области карты
@@ -63,7 +63,7 @@
     if (isEnablePage) {
       adFormAddressY += Math.round(mainPin.clientHeight / 2) + MAIN_PIN_AFTER_HEIGHT;
     }
-    window.form.adFormAddress.value = adFormAddressX + ', ' + adFormAddressY;
+    window.form.address.value = adFormAddressX + ', ' + adFormAddressY;
   };
 
   /**
