@@ -5,8 +5,8 @@
   /**
    * Карта и ее фильтры
    */
-  var map = document.querySelector('.map');
-  var mapFiltersContainer = map.querySelector('.map__filters-container');
+  var workspace = document.querySelector('.map');
+  var workspaceFilters = workspace.querySelector('.map__filters-container');
 
   /**
    * Помощник, переводящий страницу в активный режим по клику
@@ -34,7 +34,7 @@
    */
   var documentKeyDownHandler = function (evt) {
     if (evt.keyCode === window.utils.KeyCode.ESC) {
-      window.card.closeCard();
+      window.card.close();
     }
   };
 
@@ -44,15 +44,15 @@
    */
   var showLoadedOffersHandler = function (responseItems) {
     window.data.offers = responseItems;
-    map.insertBefore(window.pins.placePins(window.data.offers), mapFiltersContainer);
+    workspace.insertBefore(window.pins.place(window.data.offers), workspaceFilters);
 
-    map.classList.remove(window.utils.ClassForManipulation.MAP_FADED);
-    window.form.adForm.classList.remove(window.utils.ClassForManipulation.ADFORM_DISABLED);
-    window.form.adFormAddress.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
-    window.utils.enableElements(window.filters.mapFiltersForm);
-    window.utils.enableElements(window.form.adFormFieldsets);
-    window.utils.addClassForElements(window.form.adFormSelects, window.utils.ClassForManipulation.CURSOR_POINTER);
-    window.utils.removeClassForElements(window.form.adFormFieldsets, window.utils.ClassForManipulation.CURSOR_DEFAULT);
+    workspace.classList.remove(window.utils.ClassForManipulation.MAP_FADED);
+    window.form.advert.classList.remove(window.utils.ClassForManipulation.ADFORM_DISABLED);
+    window.form.address.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
+    window.utils.enableElements(window.filters.form);
+    window.utils.enableElements(window.form.fieldsets);
+    window.utils.addClassForElements(window.form.selects, window.utils.ClassForManipulation.CURSOR_POINTER);
+    window.utils.removeClassForElements(window.form.fieldsets, window.utils.ClassForManipulation.CURSOR_DEFAULT);
 
     window.form.setRequirementsTitle();
     window.form.setRequirementsPrice();
@@ -74,7 +74,7 @@
    * Помошник, выполняющийся после успешной отправки данных формы
    */
   var uploadOfferDataHandler = function () {
-    window.card.closeCard();
+    window.card.close();
     window.messages.displaySuccessMessageHandler();
     window.messages.displayOffMessageHandler();
     disablePage();
@@ -85,7 +85,7 @@
    * @param {*} response
    */
   var errorUploadOfferDataHandler = function (response) {
-    window.card.closeCard();
+    window.card.close();
     window.messages.displayErrorMessageHandler(response);
     window.messages.displayOffMessageHandler();
   };
@@ -94,9 +94,9 @@
    * Помощник, обеспечивающий очистку формы
    * @param {event} evt
    */
-  var clearButtonClickhandler = function (evt) {
+  var clearButtonClickHandler = function (evt) {
     evt.preventDefault();
-    window.card.closeCard();
+    window.card.close();
     disablePage();
   };
 
@@ -104,9 +104,9 @@
    * Помощник, выполняющий отправку данных формы на сервер
    * @param {event} evt
    */
-  var adFormSubmitHandler = function (evt) {
+  var advertSubmitHandler = function (evt) {
     evt.preventDefault();
-    window.backend.serverRequest(window.backend.RequestType.POST, window.backend.RequestUrl.URL_POST, uploadOfferDataHandler, errorUploadOfferDataHandler, new FormData(window.form.adForm));
+    window.backend.serverRequest(window.backend.RequestType.POST, window.backend.RequestUrl.URL_POST, uploadOfferDataHandler, errorUploadOfferDataHandler, new FormData(window.form.advert));
   };
 
   /**
@@ -122,29 +122,29 @@
     window.locality.mainPin.addEventListener('mousedown', mainPinMouseDownHandler);
     window.locality.mainPin.addEventListener('keydown', mainPinKeyDownHandler);
     window.locality.setMainPinDefaultCoordinate();
-    map.classList.add(window.utils.ClassForManipulation.MAP_FADED);
-    window.form.adForm.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
-    window.utils.disableElements(window.filters.mapFiltersForm);
-    window.utils.disableElements(window.form.adFormFieldsets);
-    window.utils.removeClassForElements(window.form.adFormSelects, window.utils.ClassForManipulation.CURSOR_POINTER);
-    window.utils.addClassForElements(window.form.adFormFieldsets, window.utils.ClassForManipulation.CURSOR_DEFAULT);
+    workspace.classList.add(window.utils.ClassForManipulation.MAP_FADED);
+    window.form.advert.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
+    window.utils.disableElements(window.filters.form);
+    window.utils.disableElements(window.form.fieldsets);
+    window.utils.removeClassForElements(window.form.selects, window.utils.ClassForManipulation.CURSOR_POINTER);
+    window.utils.addClassForElements(window.form.fieldsets, window.utils.ClassForManipulation.CURSOR_DEFAULT);
 
-    window.pins.removePins();
-    window.filters.mapFiltersForm.reset();
-    window.form.adForm.reset();
-    window.form.resetAdFormPhotosAndAvatar();
+    window.pins.remove();
+    window.filters.form.reset();
+    window.form.advert.reset();
+    window.form.resetPhotosAndAvatar();
     window.form.setRequirementsPrice();
     window.locality.getAddress(false);
 
     document.removeEventListener('keydown', documentKeyDownHandler);
-    window.form.adForm.removeEventListener('change', window.form.adFormChangeHandler);
-    window.form.adForm.removeEventListener('submit', adFormSubmitHandler);
-    window.form.adFormAvatarUpload.removeEventListener('change', window.form.adFormAvatarChangeHandler);
-    window.form.adFormPhotosUpload.removeEventListener('change', window.form.adFormPhotosChangeHandler);
-    window.form.adFormPhotosPreview.removeEventListener('click', window.form.adFormPhotosClickHandler);
-    window.form.adFormPhotosPreview.removeEventListener('keydown', window.form.adFormPhotosKeyDownHandler);
-    window.form.adFormButtonClear.removeEventListener('click', clearButtonClickhandler);
-    window.filters.mapFiltersForm.removeEventListener('change', window.filters.mapFiltersFormChangeHandler);
+    window.form.advert.removeEventListener('change', window.form.advertChangeHandler);
+    window.form.advert.removeEventListener('submit', advertSubmitHandler);
+    window.form.avatarUpload.removeEventListener('change', window.form.avatarChangeHandler);
+    window.form.photosUpload.removeEventListener('change', window.form.photosChangeHandler);
+    window.form.photosPreview.removeEventListener('click', window.form.photosClickHandler);
+    window.form.photosPreview.removeEventListener('keydown', window.form.photosKeyDownHandler);
+    window.form.buttonClear.removeEventListener('click', clearButtonClickHandler);
+    window.filters.form.removeEventListener('change', window.filters.formChangeHandler);
   };
 
   disablePage();
@@ -160,18 +160,19 @@
     window.backend.serverRequest(window.backend.RequestType.GET, window.backend.RequestUrl.URL_GET, showLoadedOffersHandler, errorLoadOffersHandler);
 
     document.addEventListener('keydown', documentKeyDownHandler);
-    window.form.adForm.addEventListener('change', window.form.adFormChangeHandler);
-    window.form.adForm.addEventListener('submit', adFormSubmitHandler);
-    window.form.adFormAvatarUpload.addEventListener('change', window.form.adFormAvatarChangeHandler);
-    window.form.adFormPhotosUpload.addEventListener('change', window.form.adFormPhotosChangeHandler);
-    window.form.adFormPhotosPreview.addEventListener('click', window.form.adFormPhotosClickHandler);
-    window.form.adFormPhotosPreview.addEventListener('keydown', window.form.adFormPhotosKeyDownHandler);
-    window.form.adFormButtonClear.addEventListener('click', clearButtonClickhandler);
-    window.filters.mapFiltersForm.addEventListener('change', window.filters.mapFiltersFormChangeHandler);
+    window.form.advert.addEventListener('change', window.form.advertChangeHandler);
+    window.form.advert.addEventListener('submit', advertSubmitHandler);
+    window.form.avatarUpload.addEventListener('change', window.form.avatarChangeHandler);
+    window.form.photosUpload.addEventListener('change', window.form.photosChangeHandler);
+    window.form.photosPreview.addEventListener('click', window.form.photosClickHandler);
+    window.form.photosPreview.addEventListener('keydown', window.form.photosKeyDownHandler);
+    window.form.buttonClear.addEventListener('click', clearButtonClickHandler);
+    window.filters.form.addEventListener('change', window.filters.formChangeHandler);
   };
 
   window.map = {
-    map: map
+    workspace: workspace,
+    workspaceFilters: workspaceFilters
   };
 
 })();

@@ -69,8 +69,10 @@
    * Удаление сообщения
    */
   var removeMessageHandler = function () {
-    if (document.querySelector('div[name="message"]') !== null) {
-      document.querySelector('div[name="message"]').remove();
+    var message = document.querySelector('div[name="message"]');
+    if (message) {
+      document.removeEventListener('keydown', messageKeyDownHandler);
+      message.remove();
     }
   };
 

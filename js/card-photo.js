@@ -28,8 +28,9 @@
    * Закрытие окна изображения
    */
   var closePhotoDisplay = function () {
-    if (document.querySelector('.' + window.utils.ClassForManipulation.MAP_CARD_PHOTO)) {
-      document.querySelector('.' + window.utils.ClassForManipulation.MAP_CARD_PHOTO).remove();
+    var mapCardPhoto = document.querySelector('.' + window.utils.ClassForManipulation.MAP_CARD_PHOTO);
+    if (mapCardPhoto) {
+      mapCardPhoto.remove();
     }
   };
 

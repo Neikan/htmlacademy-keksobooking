@@ -5,7 +5,7 @@
   /**
    * Фильтры карты
    */
-  var mapFiltersForm = document.querySelector('.map__filters');
+  var form = document.querySelector('.map__filters');
 
   /**
    * Значение фильтров по умолчанию
@@ -35,7 +35,7 @@
    * @return {array}
    */
   var getFiltersData = function () {
-    var mapFilters = mapFiltersForm.querySelectorAll('select, input[type=checkbox]:checked');
+    var mapFilters = form.querySelectorAll('select, input[type=checkbox]:checked');
     var filterItems = [];
     mapFilters.forEach(function (filter) {
       filterItems.push({
@@ -99,16 +99,16 @@
   /**
    * Помощник, обновляющий информацию на карте в соответствии с изменениями фильтров
    */
-  var mapFiltersFormChangeHandler = function () {
-    window.card.closeCard();
-    window.pins.removePins();
-    window.pins.updatePins();
+  var formChangeHandler = function () {
+    window.card.close();
+    window.pins.remove();
+    window.pins.update();
   };
 
   window.filters = {
     filteringOffers: filteringOffers,
-    mapFiltersForm: mapFiltersForm,
-    mapFiltersFormChangeHandler: mapFiltersFormChangeHandler
+    form: form,
+    formChangeHandler: formChangeHandler
   };
 
 })();

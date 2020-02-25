@@ -5,65 +5,69 @@
   /**
    * Ограничения для полей формы объявления
    */
-  var MIN_TITLE_LENGTH = 30;
-  var MAX_TITLE_LENGTH = 100;
-  var MAX_PRICE = 1000000;
+  var FieldLimit = {
+    MIN_TITLE_LENGTH: 30,
+    MAX_TITLE_LENGTH: 100,
+    MAX_PRICE: 1000000,
+    MAX_ROOMS: 100,
+    MIN_CAPACITY: 0
+  };
 
   /**
    * Формы объявления и ее поля
    */
-  var adForm = document.querySelector('.ad-form');
-  var adFormFieldsets = adForm.querySelectorAll('input, select, button, label, fieldset');
-  var adFormSelects = adForm.querySelectorAll('select');
-  var adFormAvatarUpload = adForm.querySelector('#avatar');
-  var adFormAvatarPreviewHeader = adForm.querySelector('.ad-form-header__preview');
-  var adFormAvatarPreview = adForm.querySelector('[class="ad-form-header__preview"] img');
-  var adFormAvatarPreviewSrc = adFormAvatarPreview.src;
-  var adFormTitle = adForm.querySelector('#title');
-  var adFormRoom = adForm.querySelector('#room_number');
-  var adFormCapacity = adForm.querySelector('#capacity');
-  var adFormAddress = adForm.querySelector('#address');
-  var adFormType = adForm.querySelector('#type');
-  var adFormPrice = adForm.querySelector('#price');
-  var adFormTimeIn = adForm.querySelector('#timein');
-  var adFormTimeOut = adForm.querySelector('#timeout');
-  var adFormPhotosUpload = adForm.querySelector('#images');
-  var adFormPhotosPreview = adForm.querySelector('.ad-form__photo');
-  var adFormButtonClear = adForm.querySelector('.ad-form__reset');
+  var advert = document.querySelector('.ad-form');
+  var fieldsets = advert.querySelectorAll('input, select, button, label, fieldset');
+  var selects = advert.querySelectorAll('select');
+  var avatarUpload = advert.querySelector('#avatar');
+  var avatarPreviewHeader = advert.querySelector('.ad-form-header__preview');
+  var avatarPreview = advert.querySelector('[class="ad-form-header__preview"] img');
+  var avatarPreviewSrc = avatarPreview.src;
+  var title = advert.querySelector('#title');
+  var room = advert.querySelector('#room_number');
+  var capacity = advert.querySelector('#capacity');
+  var address = advert.querySelector('#address');
+  var type = advert.querySelector('#type');
+  var price = advert.querySelector('#price');
+  var timeIn = advert.querySelector('#timein');
+  var timeOut = advert.querySelector('#timeout');
+  var photosUpload = advert.querySelector('#images');
+  var photosPreview = advert.querySelector('.ad-form__photo');
+  var buttonClear = advert.querySelector('.ad-form__reset');
 
   /**
    * Установка параметров для названия объявления
    */
   var setRequirementsTitle = function () {
-    adFormTitle.setAttribute('minlength', MIN_TITLE_LENGTH);
-    adFormTitle.setAttribute('maxlength', MAX_TITLE_LENGTH);
-    adFormTitle.setAttribute('required', true);
+    title.setAttribute('minlength', FieldLimit.MIN_TITLE_LENGTH);
+    title.setAttribute('maxlength', FieldLimit.MAX_TITLE_LENGTH);
+    title.setAttribute('required', true);
   };
 
   /**
    * Установка параметров для цены за ночь в объекте объявления
    */
   var setRequirementsPrice = function () {
-    adFormPrice.placeholder = window.data.housingData[adFormType.value].price;
-    adFormPrice.min = window.data.housingData[adFormType.value].price;
-    adFormPrice.max = MAX_PRICE;
-    adFormPrice.setAttribute('required', true);
+    price.placeholder = window.data.housingData[type.value].price;
+    price.min = window.data.housingData[type.value].price;
+    price.max = FieldLimit.MAX_PRICE;
+    price.setAttribute('required', true);
   };
 
   /**
    * Установка параметров по типам файлов для полей аватара автора и фотографий объекта объявления
    */
   var setRequirementsImages = function () {
-    adFormAvatarUpload.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
-    adFormPhotosUpload.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
+    avatarUpload.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
+    photosUpload.setAttribute('accept', '.png, .jpeg, .jpg, .gif');
   };
 
   /**
    * Установка параметров для адреса объекта объявления
    */
   var setRequirementsAddress = function () {
-    adFormAddress.setAttribute('readonly', true);
-    adFormAddress.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
+    address.setAttribute('readonly', true);
+    address.classList.add(window.utils.ClassForManipulation.ADFORM_DISABLED);
   };
 
   /**
@@ -71,18 +75,18 @@
    */
   var validateRoomAndCapacity = function () {
     switch (true) {
-      case (adFormRoom.value === '100' && adFormCapacity.value !== '0'):
-        adFormRoom.setCustomValidity('Для выбранного количества комнат размещение гостей невозможно');
+      case (room.value === FieldLimit.MAX_ROOMS.toString() && capacity.value !== FieldLimit.MIN_CAPACITY.toString()):
+        room.setCustomValidity('Для выбранного количества комнат размещение гостей невозможно');
         break;
-      case (adFormRoom.value !== '100' && adFormCapacity.value === '0'):
-        adFormCapacity.setCustomValidity('Выбранное количество комнат предназначено для гостей');
+      case (room.value !== FieldLimit.MAX_ROOMS.toString() && capacity.value === '0'):
+        capacity.setCustomValidity('Выбранное количество комнат предназначено для гостей');
         break;
-      case (adFormRoom.value < adFormCapacity.value && adFormCapacity.value !== 0):
-        adFormCapacity.setCustomValidity('Количество гостей больше, чем комнат. Пожалуйста, укажите количество гостей, равное или меньшее, чем количество комнат');
+      case (room.value < capacity.value && capacity.value !== 0):
+        capacity.setCustomValidity('Количество гостей больше, чем комнат. Пожалуйста, укажите количество гостей, равное или меньшее, чем количество комнат');
         break;
       default:
-        adFormRoom.setCustomValidity('');
-        adFormCapacity.setCustomValidity('');
+        room.setCustomValidity('');
+        capacity.setCustomValidity('');
     }
   };
 
@@ -91,11 +95,11 @@
    * @param {event} evt
    */
   var validateTime = function (evt) {
-    if (evt.target === adFormTimeIn) {
-      adFormTimeOut.value = adFormTimeIn.value;
+    if (evt.target === timeIn) {
+      timeOut.value = timeIn.value;
     }
-    if (evt.target === adFormTimeOut) {
-      adFormTimeIn.value = adFormTimeOut.value;
+    if (evt.target === timeOut) {
+      timeIn.value = timeOut.value;
     }
   };
 
@@ -104,9 +108,9 @@
    * @param {event} evt
    */
   var validatePrice = function (evt) {
-    if (evt.target === adFormType) {
-      adFormPrice.placeholder = window.data.housingData[adFormType.value].price;
-      adFormPrice.min = window.data.housingData[adFormType.value].price;
+    if (evt.target === type) {
+      price.placeholder = window.data.housingData[type.value].price;
+      price.min = window.data.housingData[type.value].price;
     }
   };
 
@@ -114,7 +118,7 @@
    * Валидация формы объявления
    * @param {event} evt
    */
-  var validationForm = function (evt) {
+  var validateAllFields = function (evt) {
     validatePrice(evt);
     validateTime(evt);
     validateRoomAndCapacity();
@@ -124,25 +128,25 @@
    * Помощник, вызывающий валидацию данных формы
    * @param {event} evt
    */
-  var adFormChangeHandler = function (evt) {
-    window.form.validationForm(evt);
+  var advertChangeHandler = function (evt) {
+    validateAllFields(evt);
   };
 
   /**
    * Помощник, отслеживавающий изменение аватара автора объявления
    */
-  var adFormAvatarChangeHandler = function () {
-    window.utils.displayPreviewImage(adFormAvatarUpload, adFormAvatarPreview, false);
-    adFormAvatarPreviewHeader.classList.add(window.utils.ClassForManipulation.AVATAR_IMAGE);
-    adFormAvatarPreviewHeader.setAttribute('tabindex', 0);
-    adFormAvatarPreviewHeader.addEventListener('click', adFormAvatarPreviewHeaderClickHandler);
-    adFormAvatarPreviewHeader.addEventListener('keydown', adFormAvatarPreviewHeaderkeyDownHandler);
+  var avatarChangeHandler = function () {
+    window.utils.displayPreviewImage(avatarUpload, avatarPreview, false);
+    avatarPreviewHeader.classList.add(window.utils.ClassForManipulation.AVATAR_IMAGE);
+    avatarPreviewHeader.setAttribute('tabindex', 0);
+    avatarPreviewHeader.addEventListener('click', avatarPreviewHeaderClickHandler);
+    avatarPreviewHeader.addEventListener('keydown', avatarPreviewHeaderkeyDownHandler);
   };
 
   /**
    * Помощник, добавляющий возможность удаления добавленного изображения аватара по клику
    */
-  var adFormAvatarPreviewHeaderClickHandler = function () {
+  var avatarPreviewHeaderClickHandler = function () {
     resetAdFormAvatar();
   };
 
@@ -150,7 +154,7 @@
    * Помощник, добавляющий возможность удаления добавленного изображения аватара по нажатию клавишу клавиатуры
    * @param {event} evt
    */
-  var adFormAvatarPreviewHeaderkeyDownHandler = function (evt) {
+  var avatarPreviewHeaderkeyDownHandler = function (evt) {
     if (evt.keyCode === window.utils.KeyCode.ENTER) {
       resetAdFormAvatar();
     }
@@ -159,17 +163,17 @@
   /**
    * Помощник, отслеживавающий изменение фотографий объекта
    */
-  var adFormPhotosChangeHandler = function () {
-    window.utils.displayPreviewImage(adFormPhotosUpload, adFormPhotosPreview, true, window.utils.createImageElement());
-    adFormPhotosPreview.classList.add(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
+  var photosChangeHandler = function () {
+    window.utils.displayPreviewImage(photosUpload, photosPreview, true, window.utils.createImageElement());
+    photosPreview.classList.add(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
   };
 
   /**
    * Помощник, отслеживавающий нажатия на фотографии объекта
    */
-  var adFormPhotosClickHandler = function () {
-    if (adFormPhotosPreview.children.length === 0) {
-      adFormPhotosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
+  var photosClickHandler = function () {
+    if (photosPreview.children.length === 0) {
+      photosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
     }
   };
 
@@ -177,10 +181,10 @@
    * Помощник, отслеживавающий клавиатурные нажатия на фотографии объекта
    * @param {event} evt
    */
-  var adFormPhotosKeyDownHandler = function (evt) {
+  var photosKeyDownHandler = function (evt) {
     if (evt.keyCode === window.utils.KeyCode.ENTER) {
-      if (adFormPhotosPreview.children.length === 0) {
-        adFormPhotosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
+      if (photosPreview.children.length === 0) {
+        photosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
       }
     }
   };
@@ -189,46 +193,46 @@
    * Возврат блока аватара автора к значениям по умолчанию
    */
   var resetAdFormAvatar = function () {
-    adFormAvatarPreview.src = adFormAvatarPreviewSrc;
-    adFormAvatarPreviewHeader.classList.remove(window.utils.ClassForManipulation.AVATAR_IMAGE);
-    adFormAvatarPreviewHeader.removeAttribute('tabindex');
-    adFormAvatarPreviewHeader.removeEventListener('click', adFormAvatarPreviewHeaderClickHandler);
-    adFormAvatarPreviewHeader.removeEventListener('keydown', adFormAvatarPreviewHeaderkeyDownHandler);
+    avatarPreview.src = avatarPreviewSrc;
+    avatarPreviewHeader.classList.remove(window.utils.ClassForManipulation.AVATAR_IMAGE);
+    avatarPreviewHeader.removeAttribute('tabindex');
+    avatarPreviewHeader.removeEventListener('click', avatarPreviewHeaderClickHandler);
+    avatarPreviewHeader.removeEventListener('keydown', avatarPreviewHeaderkeyDownHandler);
   };
 
   /**
    * Возврат блоков аватара автора и фотографий объекта к значениям по умолчанию
    */
-  var resetAdFormPhotosAndAvatar = function () {
+  var resetPhotosAndAvatar = function () {
     resetAdFormAvatar();
-    adFormPhotosPreview.innerHTML = '';
-    adFormPhotosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
+    photosPreview.innerHTML = '';
+    photosPreview.classList.remove(window.utils.ClassForManipulation.PHOTO_IMAGE_CONTAINER);
   };
 
   window.form = {
-    adForm: adForm,
-    adFormFieldsets: adFormFieldsets,
-    adFormSelects: adFormSelects,
-    adFormAddress: adFormAddress,
-    adFormAvatarPreviewSrc: adFormAvatarPreviewSrc,
-    adFormAvatarUpload: adFormAvatarUpload,
-    adFormPhotosUpload: adFormPhotosUpload,
-    adFormPhotosPreview: adFormPhotosPreview,
-    adFormButtonClear: adFormButtonClear,
+    advert: advert,
+    fieldsets: fieldsets,
+    selects: selects,
+    address: address,
+    avatarPreviewSrc: avatarPreviewSrc,
+    avatarUpload: avatarUpload,
+    photosUpload: photosUpload,
+    photosPreview: photosPreview,
+    buttonClear: buttonClear,
 
     setRequirementsTitle: setRequirementsTitle,
     setRequirementsPrice: setRequirementsPrice,
     setRequirementsImages: setRequirementsImages,
     setRequirementsAddress: setRequirementsAddress,
 
-    validationForm: validationForm,
-    resetAdFormPhotosAndAvatar: resetAdFormPhotosAndAvatar,
+    validateAllFields: validateAllFields,
+    resetPhotosAndAvatar: resetPhotosAndAvatar,
 
-    adFormChangeHandler: adFormChangeHandler,
-    adFormAvatarChangeHandler: adFormAvatarChangeHandler,
-    adFormPhotosChangeHandler: adFormPhotosChangeHandler,
-    adFormPhotosClickHandler: adFormPhotosClickHandler,
-    adFormPhotosKeyDownHandler: adFormPhotosKeyDownHandler
+    advertChangeHandler: advertChangeHandler,
+    avatarChangeHandler: avatarChangeHandler,
+    photosChangeHandler: photosChangeHandler,
+    photosClickHandler: photosClickHandler,
+    photosKeyDownHandler: photosKeyDownHandler
   };
 
 })();

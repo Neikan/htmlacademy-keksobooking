@@ -45,9 +45,9 @@
    * @param {array} elements
    */
   var enableElements = function (elements) {
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].removeAttribute('disabled');
-    }
+    Array.from(elements).forEach(function (element) {
+      element.removeAttribute('disabled');
+    });
   };
 
   /**
@@ -55,9 +55,9 @@
    * @param {array} elements
    */
   var disableElements = function (elements) {
-    for (var i = 0; i < elements.length; i++) {
-      elements[i].setAttribute('disabled', true);
-    }
+    Array.from(elements).forEach(function (element) {
+      element.setAttribute('disabled', true);
+    });
   };
 
   /**
