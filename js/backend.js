@@ -12,8 +12,8 @@
    * Адреса, по которым выполняются запросы
    */
   var RequestUrl = {
-    URL_GET: 'https://js.dump.academy/keksobooking/data',
-    URL_POST: 'https://js.dump.academy/keksobooking'
+    URL_GET: 'https://javascript.pages.academy/keksobooking/data',
+    URL_POST: 'https://javascript.pages.academy/keksobooking'
   };
 
   /**
